@@ -13,7 +13,8 @@ int main(int argc, char *argv[])
     pthread_t tid; /* the thread identifier */
     pthread_attr_t attr; /* set of attributes for the thread */
 
-    /* have argument based interaction*/
+    /* check the arguments given, return -1 if bad values*/
+
 
     /* get the default attributes */
     pthread_attr_init(&attr);
@@ -31,7 +32,7 @@ int main(int argc, char *argv[])
 void *runner(void *param) 
 {
  /* runner code*/
-
+	fprintf(stderr,"I Ran\n");
 	pthread_exit(0);
 	
 }
