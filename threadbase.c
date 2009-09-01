@@ -30,7 +30,7 @@ pthread_attr_init(), pthread_create(), pthread_exit(), pthread_join(), etc.
 #define CARID_NUMBER_MAX 99999999
 #define FALSE 0
 #define TRUE !FALSE
-#define MAX_QUEUE 100
+#define MAX_QUEUE 12
 
 
 /* An example of the data structure of the Car Park. You may define your own car park */
@@ -42,7 +42,7 @@ typedef struct {
     char *arrival_time[CAR_PARK_SIZE]; // stores arrival time of cars
     int  keep_running;		         // set false to exit threads
     int  size;			         // current size of carpark
-	int  index;
+	int  index;					//used as a wrap around for the queue
 	} CarStorage;
 
 typedef struct {
@@ -80,12 +80,14 @@ int main()
 	CarPark _cp;
 	_cp.parks.size = 0;
 	_cp.queue.size = 0;
+	_cp.queue.index = 0;
+	_cp.parks.index = 0;
 	_cp.parks.keep_running = TRUE;
 	_cp.queue.keep_running = TRUE;
 
     /* create the threads */
 	pthread_create(&carparkEnter,NULL,carpark_t,&_cp);
-    pthread_create(&arrival,NULL,arrival_t,&_cp); //currently wrong
+    pthread_create(&arrival,NULL,arrival_t,&_cp);
 	
 
 
@@ -101,22 +103,17 @@ int main()
 //
 void addCar(char *car, void *arg)
 {
-	CarStorage *_carPark = arg;
+	CarPark *_carPark = arg;
 	
-	if(_carPark->keep_running)
-	{
-		if(_carPark->size < CAR_PARK_SIZE)
-		{
-			_carPark->size = _carPark->size+1;
-			//not tested, should wrap around once it meets max size
-			_carPark->buffer[(_carPark->size % CAR_PARK_SIZE)] = car; 
-			//TODO add time
+
+	_carPark->parks.size = _carPark->parks.size+1;
+	//not tested, should wrap around once it meets max size
+	_carPark->parks.buffer[(_carPark->parks.size % CAR_PARK_SIZE)] = car; 
+	printf("Added car %s\n", car);
+//****************//ARE CARS RANDOMLY REMOVED?
+	//TODO add time
 			
-		}
-	} else
-	{
-		sleep(TIME_OUT_SLEEP);
-	}
+
 }
 
 
@@ -125,10 +122,10 @@ void removeCar(void *arg)
 {
   //remove a car form the struct	
   //remove the 1st car from the struct and shuffle them all down?
-	CarStorage *_carQueue = arg;
-	_carQueue->buffer[_carQueue->index] = "";
-	_carQueue->index = _carQueue->index+1 % MAX_QUEUE;
-	_carQueue->size = _carQueue->size-1;
+	CarPark *_carPark = arg;
+	_carPark->queue.buffer[_carPark->queue.index] = "";
+	_carPark->queue.index = _carPark->queue.index+1 % MAX_QUEUE;
+	_carPark->queue.size = _carPark->queue.size-1;
   
 }
 
@@ -182,7 +179,7 @@ void *arrival_t(void *arg)
 				_carPark->queue.buffer[(_carPark->queue.size)] = newCar(); 
 				printf("Arriving Car: %s\n", _carPark->queue.buffer[_carPark->queue.size]);
 				printf("\tCars in Queue: %d\n", _carPark->queue.size); //this is for testing only
-				sleep(10);
+				sleep(5);
 			}
 		}
 		else 
@@ -214,9 +211,15 @@ void *carpark_t(void *arg)
 		if (_carPark->parks.size < CAR_PARK_SIZE)
 		{
 			//load a car
-			printf("Loaded Car lewl %d\n", _carPark->queue.size);
 			
-			sleep(1);
+			if (_carPark->queue.size > 0)
+			{
+				addCar(_carPark->queue.buffer[_carPark->queue.index], &_carPark);
+			} else
+			{
+				//no cars waiting
+				sleep(5);
+			}
 			
 		} else
 		{
