@@ -69,7 +69,7 @@ void exit_with_error(char *message);
 
 int main()
 {
-    
+
 	pthread_t arrival;
 	pthread_t carparkEnter;
 	pthread_t deaparture;
@@ -84,6 +84,7 @@ int main()
 	_cp.parks.index = 0;
 	_cp.parks.keep_running = TRUE;
 	_cp.queue.keep_running = TRUE;
+	
 
     /* create the threads */
 	pthread_create(&carparkEnter,NULL,carpark_t,&_cp);
@@ -176,15 +177,16 @@ void *arrival_t(void *arg)
 			if (_rand >= ARRIVAL_PERCENT_ACTION)
 			{	
 				_carPark->queue.size = _carPark->queue.size+1;
-				_carPark->queue.buffer[(_carPark->queue.size)] = newCar(); 
-				printf("Arriving Car: %s\n", _carPark->queue.buffer[_carPark->queue.size]);
+				_carPark->queue.buffer[(_carPark->queue.index)] = newCar(); 
+				printf("Arriving Car: %s\n", _carPark->queue.buffer[_carPark->queue.index % CAR_PARK_SIZE]);
 				printf("\tCars in Queue: %d\n", _carPark->queue.size); //this is for testing only
+				_carPark->queue.index = _carPark->queue.index+1 % CAR_PARK_SIZE;
 				sleep(5);
 			}
 		}
 		else 
 		{
-			printf("CarPark Queue has reached max size, sleeping");
+			printf("CarPark Queue has reached max size, sleeping\n");
 			sleep(TIME_OUT_SLEEP);
 		}
 	}
@@ -215,14 +217,17 @@ void *carpark_t(void *arg)
 			if (_carPark->queue.size > 0)
 			{
 				addCar(_carPark->queue.buffer[_carPark->queue.index], &_carPark);
+				sleep(1);
 			} else
 			{
 				//no cars waiting
+				printf("CarPark has no cars waiting to enter\n");
 				sleep(5);
 			}
 			
 		} else
 		{
+			printf("CarPark is full\n");
 			sleep(TIME_OUT_SLEEP);
 		}
 	}
