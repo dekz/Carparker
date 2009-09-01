@@ -94,7 +94,7 @@ int main()
 
     /* now wait for the thread to exit */
     pthread_join(carparkEnter,NULL); 
-//	pthread_join(arrival,NULL); 
+	pthread_join(arrival,NULL); 
 
 
 	return 0;
@@ -183,7 +183,7 @@ void *arrival_t(void *arg)
 				printf("Arriving Car: %s\n", _carPark->queue.buffer[((_carPark->queue.index + _carPark->queue.size) % CAR_PARK_SIZE)-1]);
 				printf("\tCars in Queue: %d\n", _carPark->queue.size); //this is for testing only
 
-				sleep(5);
+				sleep(1);
 			}
 		}
 		else 
@@ -204,40 +204,40 @@ void *carpark_t(void *arg)
 	//if carpark is at max size, thread blocks and prints message
 
 	CarPark *_carPark = arg;
-	
-	
+
+
 	fprintf(stderr,"CarPark Ran\n");
 
 	while (_carPark->parks.keep_running)
 	{
 		//accept cars
-		
+
 		if (_carPark->parks.size < CAR_PARK_SIZE)
 		{
 			//load a car
-			
+
 			if (_carPark->queue.size > 0)
 			{
 				addCar(_carPark->queue.buffer[_carPark->queue.index % MAX_QUEUE], &_carPark);
 //				sleep(1);
-			} else
-			{
+				} else
+				{
 				//no cars waiting
-				printf("CarPark has no cars waiting to enter\n");
-				sleep(1);
-			}
-			
-		} else
-		{
+					printf("CarPark has no cars waiting to enter\n");
+					sleep(1);
+				}
+
+			} else
+					{
 			printf("CarPark is full\n");
 			sleep(TIME_OUT_SLEEP);
 		}
-		
+
 		printf("I RAN\n");
 	}
-	
+
 	//pthread_exit(0);
-	
+
 }
 
 void *departure_t(void *arg) 
