@@ -1,4 +1,4 @@
-/*gcc thrd.c -lpthread
+/*
 pthread_attr_init(), pthread_create(), pthread_exit(), pthread_join(), etc.
 */
 #include <stdio.h>
@@ -35,20 +35,17 @@ pthread_attr_init(), pthread_create(), pthread_exit(), pthread_join(), etc.
 
 /* An example of the data structure of the Car Park. You may define your own car park */
 
+
+//using the same structure twice because I cannot pass 2 pointers to structures
 typedef struct {
     char *buffer[CAR_PARK_SIZE];       // stores carpark cars
     char *arrival_time[CAR_PARK_SIZE]; // stores arrival time of cars
     int  keep_running;		         // set false to exit threads
     int  size;			         // current size of carpark
-} CarPark;
+	int index;
+} CarStorage;
 
-typedef struct {
-    char *queue[MAX_QUEUE]; //***should be a queue******
-    char *arrival_time[MAX_QUEUE];
-    int  keep_running;
-    int  size;
-	int index;					//easy to access index instead of having to shuffle the queue down
-} CarQueue;
+
 
 
 /*functions from skeleton*/
@@ -72,8 +69,8 @@ int main()
 	pthread_t carparkEnter;
 	pthread_t deaparture;
 	pthread_t monitor;
-	CarPark _carPark;
-	CarQueue _carQueue;
+	CarStorage _carPark;
+	CarStorage _carQueue;
 	
 	_carPark.keep_running = TRUE;
 	_carPark.size = 0;
@@ -82,9 +79,10 @@ int main()
 	_carQueue.keep_running = TRUE;
 	_carQueue.index = 0;
 	
+	CarStorage _carArray[] = {_carPark, _carQueue};
 
     /* create the threads */
-	pthread_create(&carparkEnter,NULL,carpark_t,&_carPark);
+	pthread_create(&carparkEnter,NULL,carpark_t,&_carArray);
 
     pthread_create(&arrival,NULL,arrival_t,&_carQueue);
 
@@ -99,7 +97,7 @@ int main()
 //
 void addCar(char *car, void *arg)
 {
-	CarPark *_carPark = arg;
+	CarStorage *_carPark = arg;
 	
 	if(_carPark->keep_running)
 	{
@@ -123,8 +121,8 @@ void removeCar(void *arg)
 {
   //remove a car form the struct	
   //remove the 1st car from the struct and shuffle them all down?
-	CarQueue *_carQueue = arg;
-	_carQueue->queue[_carQueue->index] = "";
+	CarStorage *_carQueue = arg;
+	_carQueue->buffer[_carQueue->index] = "";
 	_carQueue->index = _carQueue->index+1 % MAX_QUEUE;
 	_carQueue->size = _carQueue->size-1;
   
@@ -158,7 +156,7 @@ void *monitor_t(void *arg)
 	//	q or Q terminates (stops GRACEFULLY)
 	//	c or C print out the carpark list
 	fprintf(stderr,"Monitor Ran\n");
-	pthread_exit(0);
+	//pthread_exit(0);
 	
 }
 
@@ -166,16 +164,21 @@ void *arrival_t(void *arg)
 {
 	//Emulate carpark Arrival, send carps to the carpark enter thread
 	fprintf(stderr,"Arrival Ran\n");
-	CarQueue *_carQueue = arg;
+	CarStorage *_carQueue = arg;
 	while (_carQueue->keep_running)
 	{
 		if  (_carQueue->size < MAX_QUEUE)
 		{
-			_carQueue->size = _carQueue->size+1;
-			_carQueue->queue[(_carQueue->size)] = newCar(); 
-			printf("Arriving Car: %s\n", _carQueue->queue[(_carQueue->size)]);
-			printf("\tCars in Queue: %d\n", _carQueue->size); //this is for testing only
-			sleep(10);
+			
+			int _rand = RAND(0,100); //probability of a car arriving
+			if (_rand >= ARRIVAL_PERCENT_ACTION)
+			{	
+				_carQueue->size = _carQueue->size+1;
+				_carQueue->buffer[(_carQueue->size)] = newCar(); 
+				printf("Arriving Car: %s\n", _carQueue->buffer[(_carQueue->size)]);
+				printf("\tCars in Queue: %d\n", _carQueue->size); //this is for testing only
+				sleep(10);
+			}
 		}
 		else 
 		{
@@ -193,10 +196,15 @@ void *carpark_t(void *arg)
 	//Looks in the waiting queue and if there is room it brings a new car in
 	//if number is even goes to entrance 2, if odd goes to entrance 1
 	//if carpark is at max size, thread blocks and prints message
-	CarPark *_carPark = arg;
+//	CarStorage *_carArray[] = arg;
+
+//WARNING THIS IS STILL BROKEN AND NOT FIXED
+	CarStorage *_carPark = arg;
+	CarStorage *_carQueue = arg+sizeof(CarStorage);
+	
 	
 	fprintf(stderr,"CarPark Ran\n");
-	printf("%i", !_carPark->keep_running);
+
 	while (_carPark->keep_running)
 	{
 		//accept cars
@@ -205,6 +213,7 @@ void *carpark_t(void *arg)
 		{
 			//load a car
 			printf("Loaded Car lewl \n");
+			printf("%d\n",_carQueue->size);
 			sleep(1);
 			
 		} else
@@ -222,7 +231,7 @@ void *departure_t(void *arg)
 	//emulates cars departing
 	//randomly selects a car from the car park and attempts to remove it
 	//works out time spent in carpark
-	CarPark *_carPark = arg;
+	CarStorage *_carPark = arg;
 	
 	fprintf(stderr,"Departure Ran\n");
 	while (_carPark->keep_running)
@@ -230,6 +239,11 @@ void *departure_t(void *arg)
 		//depart cars
 		if (_carPark->size > 0)
 		{
+			int _rand = RAND(0,100); //probability of a car departing
+			if (_rand >= DEPARTURE_PERCENT_ACTION)
+			{
+				
+			}
 			
 		} else
 		{
