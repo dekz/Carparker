@@ -12,8 +12,6 @@ pthread_attr_init(), pthread_create(), pthread_exit(), pthread_join(), etc.
 #include <errno.h>
 #include <ctype.h>
 
-
-
 /* name of the carpark */
 #define CAR_PARK "Phoenix Car Park"
 /* max number of cars the carpark can hold */
@@ -42,16 +40,11 @@ typedef struct {
     int  size;			         // current size of carpark
 } CarPark;
 
-
-int sum; /* this data is shared by the thread(s) */
-
-void *runner(void *param); /* the thread */
-
 /*functions from skeleton*/
 void *monitor(void *arg); /* thread */
-void *arrival_queue(void *arg);  /* thread */
-void *enter_carpark(void *arg);  /* thread */
-void *departure(void *arg);  /* thread */
+void *arrival_t(void *arg);  /* thread */
+void *carpark_t(void *arg);  /* thread */
+void *departure_t(void *arg);  /* thread */
 void add_car(char *car);
 void remove_car();
 void show_cars();
@@ -61,34 +54,65 @@ char *time_stamp();
 char get_key();
 void exit_with_error(char *message);
 
-int main(int argc, char *argv[])
+int main()
 {
-    pthread_t tid; /* the thread identifier */
-    pthread_attr_t attr; /* set of attributes for the thread */
+    
+	pthread_t arrival;
+	pthread_t carparkEnter;
+	pthread_t deaparture;
+	pthread_t monitor;
+	CarPark _carPark;
 
-    /* check the arguments given, return -1 if bad values*/
-
+	//pthread_t tid; /* the thread identifier */
+    // pthread_attr_t attr; /* set of attributes for the thread */
 
     /* get the default attributes */
-    pthread_attr_init(&attr);
+    //pthread_attr_init(&attr);
 
-    /* create the thread */
-    pthread_create(&tid,&attr,runner,argv[1]);
+    /* create the threads */
+    pthread_create(&arrival,NULL,arrival_t,&_carPark);
 
     /* now wait for the thread to exit */
-    pthread_join(tid,NULL);
+    pthread_join(arrival,NULL); 
+
 }
 
 /**
  * The thread will begin control in this function
  */
-void *runner(void *param) 
+void *monitor_t(void *arg) 
 {
  /* runner code*/
 	fprintf(stderr,"I Ran\n");
 	pthread_exit(0);
 	
 }
+
+void *arrival_t(void *arg) 
+{
+ /* runner code*/
+	fprintf(stderr,"Arrival Ran\n");
+	pthread_exit(0);
+	
+}
+
+void *carpark_t(void *arg) 
+{
+ /* runner code*/
+	fprintf(stderr,"CarPark Ran\n");
+	pthread_exit(0);
+	
+}
+
+void *departure_t(void *arg) 
+{
+ /* runner code*/
+	fprintf(stderr,"Departure Ran\n");
+	pthread_exit(0);
+	
+}
+
+
 
 
 /*
