@@ -33,6 +33,7 @@ pthread_attr_init(), pthread_create(), pthread_exit(), pthread_join(), etc.
 
 
 
+
 /* An example of the data structure of the Car Park. You may define your own car park */
 
 typedef struct {
@@ -42,8 +43,16 @@ typedef struct {
     int  size;			         // current size of carpark
 } CarPark;
 
+typedef struct {
+    char *buffer[100];
+    char *arrival_time[100];
+    int  keep_running;
+    int  size;
+} CarQueue;
+
+
 /*functions from skeleton*/
-void *monitor(void *arg); /* thread */
+void *monitor_t(void *arg); /* thread */
 void *arrival_t(void *arg);  /* thread */
 void *carpark_t(void *arg);  /* thread */
 void *departure_t(void *arg);  /* thread */
@@ -64,6 +73,7 @@ int main()
 	pthread_t deaparture;
 	pthread_t monitor;
 	CarPark _carPark;
+	CarQueue _carQueue;
 	
 	_carPark.keep_running = TRUE;
 	_carPark.size = 0;
@@ -83,7 +93,11 @@ int main()
  */
 void *monitor_t(void *arg) 
 {
- /* runner code*/
+	//(check every 25ms for user pressing keyboard)
+	//Listens for user input 
+	//Text terminal input, 
+	//	q or Q terminates (stops GRACEFULLY)
+	//	c or C print out the carpark list
 	fprintf(stderr,"I Ran\n");
 	pthread_exit(0);
 	
@@ -91,7 +105,7 @@ void *monitor_t(void *arg)
 
 void *arrival_t(void *arg) 
 {
- /* runner code*/
+	//Emulate carpark Arrival, send carps to the carpark enter thread
 	fprintf(stderr,"Arrival Ran\n");
 	pthread_exit(0);
 	
@@ -99,7 +113,9 @@ void *arrival_t(void *arg)
 
 void *carpark_t(void *arg) 
 {
- /* runner code*/
+	//Looks in the waiting queue and if there is room it brings a new car in
+	//if number is even goes to entrance 2, if odd goes to entrance 1
+	//if carpark is at max size, thread blocks and prints message
 	fprintf(stderr,"CarPark Ran\n");
 	pthread_exit(0);
 	
@@ -107,7 +123,9 @@ void *carpark_t(void *arg)
 
 void *departure_t(void *arg) 
 {
- /* runner code*/
+	//emulates cars departing
+	//randomly selects a car from the car park and attempts to remove it
+	//works out time spent in carpark
 	fprintf(stderr,"Departure Ran\n");
 	pthread_exit(0);
 	
