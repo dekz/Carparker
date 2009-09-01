@@ -55,10 +55,10 @@ void *monitor_t(void *arg); /* thread */
 void *arrival_t(void *arg);  /* thread */
 void *carpark_t(void *arg);  /* thread */
 void *departure_t(void *arg);  /* thread */
-void add_car(char *car);
-void remove_car();
-void show_cars();
-char *new_car();
+void addCar(char *car);
+void removeCar();
+void showCars();
+char* newCar();
 int  thread_sleep(int time_out_ms);
 char *time_stamp();
 char get_key();
@@ -84,13 +84,42 @@ int main()
     pthread_create(&arrival,NULL,arrival_t,&_carQueue);
 
 
-
+	newCar();
     /* now wait for the thread to exit */
     pthread_join(arrival,NULL); 
 
 	return 0;
 
 }
+
+void addCar(char *car)
+{
+	//add car to the struct
+}
+
+void removeCar()
+{
+  //remove a car form the struct	
+}
+
+void showCars()
+{
+	//iterate over and display cars
+}
+
+char* newCar()
+{
+	int i;
+	i = RAND(CARID_NUMBER_MIN,CARID_NUMBER_MAX);
+		
+	char* str = malloc(sizeof *str *10);
+	sprintf(str,"%d",i);
+	//printf("test %d", (int)sizeof(str));
+//	printf("%s",str);
+	return str;
+}
+
+
 
 /**
  * The thread will begin control in this function
@@ -114,7 +143,7 @@ void *arrival_t(void *arg)
 	printf("\tCar Created:\n");
 	CarQueue *_carQueue = arg;
 	_carQueue->size = _carQueue->size+1;
-    printf("\tCars in Queue: %d\n", _carQueue->size);
+	printf("\tCars in Queue: %d\n", _carQueue->size);
 	pthread_exit(0);
 	
 }
