@@ -42,8 +42,13 @@ typedef struct {
     char *arrival_time[CAR_PARK_SIZE]; // stores arrival time of cars
     int  keep_running;		         // set false to exit threads
     int  size;			         // current size of carpark
-	int index;
-} CarStorage;
+	int  index;
+	} CarStorage;
+
+typedef struct {
+	CarStorage parks;
+	CarStorage queue;
+	} CarPark;
 
 
 
@@ -69,25 +74,24 @@ int main()
 	pthread_t carparkEnter;
 	pthread_t deaparture;
 	pthread_t monitor;
-	CarStorage _carPark;
-	CarStorage _carQueue;
+
 	
-	_carPark.keep_running = TRUE;
-	_carPark.size = 0;
-	
-	_carQueue.size = 0;
-	_carQueue.keep_running = TRUE;
-	_carQueue.index = 0;
-	
-	CarStorage _carArray[] = {_carPark, _carQueue};
+	//Define our carpark
+	CarPark _cp;
+	_cp.parks.size = 0;
+	_cp.queue.size = 0;
+	_cp.parks.keep_running = TRUE;
+	_cp.queue.keep_running = TRUE;
 
     /* create the threads */
-	pthread_create(&carparkEnter,NULL,carpark_t,&_carArray);
+	pthread_create(&carparkEnter,NULL,carpark_t,&_cp);
+    pthread_create(&arrival,NULL,arrival_t,&_cp); //currently wrong
+	
 
-    pthread_create(&arrival,NULL,arrival_t,&_carQueue);
 
     /* now wait for the thread to exit */
     pthread_join(arrival,NULL); 
+
 
 	return 0;
 
@@ -164,19 +168,20 @@ void *arrival_t(void *arg)
 {
 	//Emulate carpark Arrival, send carps to the carpark enter thread
 	fprintf(stderr,"Arrival Ran\n");
-	CarStorage *_carQueue = arg;
-	while (_carQueue->keep_running)
+	CarPark *_carPark = arg;
+	
+	while (_carPark->queue.keep_running)
 	{
-		if  (_carQueue->size < MAX_QUEUE)
+		if  (_carPark->queue.size < MAX_QUEUE)
 		{
 			
 			int _rand = RAND(0,100); //probability of a car arriving
 			if (_rand >= ARRIVAL_PERCENT_ACTION)
 			{	
-				_carQueue->size = _carQueue->size+1;
-				_carQueue->buffer[(_carQueue->size)] = newCar(); 
-				printf("Arriving Car: %s\n", _carQueue->buffer[(_carQueue->size)]);
-				printf("\tCars in Queue: %d\n", _carQueue->size); //this is for testing only
+				_carPark->queue.size = _carPark->queue.size+1;
+				_carPark->queue.buffer[(_carPark->queue.size)] = newCar(); 
+				printf("Arriving Car: %s\n", _carPark->queue.buffer[_carPark->queue.size]);
+				printf("\tCars in Queue: %d\n", _carPark->queue.size); //this is for testing only
 				sleep(10);
 			}
 		}
@@ -196,24 +201,21 @@ void *carpark_t(void *arg)
 	//Looks in the waiting queue and if there is room it brings a new car in
 	//if number is even goes to entrance 2, if odd goes to entrance 1
 	//if carpark is at max size, thread blocks and prints message
-//	CarStorage *_carArray[] = arg;
 
-//WARNING THIS IS STILL BROKEN AND NOT FIXED
-	CarStorage *_carPark = arg;
-	CarStorage *_carQueue = arg+sizeof(CarStorage);
+	CarPark *_carPark = arg;
 	
 	
 	fprintf(stderr,"CarPark Ran\n");
 
-	while (_carPark->keep_running)
+	while (_carPark->parks.keep_running)
 	{
 		//accept cars
 		
-		if (_carPark->size < CAR_PARK_SIZE)
+		if (_carPark->parks.size < CAR_PARK_SIZE)
 		{
 			//load a car
-			printf("Loaded Car lewl \n");
-			printf("%d\n",_carQueue->size);
+			printf("Loaded Car lewl %d\n", _carPark->queue.size);
+			
 			sleep(1);
 			
 		} else
