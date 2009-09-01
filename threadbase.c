@@ -30,8 +30,7 @@ pthread_attr_init(), pthread_create(), pthread_exit(), pthread_join(), etc.
 #define CARID_NUMBER_MAX 99999999
 #define FALSE 0
 #define TRUE !FALSE
-
-
+#define MAX_QUEUE 100
 
 
 /* An example of the data structure of the Car Park. You may define your own car park */
@@ -44,8 +43,8 @@ typedef struct {
 } CarPark;
 
 typedef struct {
-    char *buffer[100];
-    char *arrival_time[100];
+    char *buffer[MAX_QUEUE];
+    char *arrival_time[MAX_QUEUE];
     int  keep_running;
     int  size;
 } CarQueue;
@@ -77,9 +76,14 @@ int main()
 	
 	_carPark.keep_running = TRUE;
 	_carPark.size = 0;
+	_carQueue.size = 0;
 	
     /* create the threads */
-    pthread_create(&arrival,NULL,arrival_t,&_carPark);
+	pthread_create(&carparkEnter,NULL,carpark_t,&_carQueue);
+
+    pthread_create(&arrival,NULL,arrival_t,&_carQueue);
+
+
 
     /* now wait for the thread to exit */
     pthread_join(arrival,NULL); 
@@ -98,7 +102,7 @@ void *monitor_t(void *arg)
 	//Text terminal input, 
 	//	q or Q terminates (stops GRACEFULLY)
 	//	c or C print out the carpark list
-	fprintf(stderr,"I Ran\n");
+	fprintf(stderr,"Monitor Ran\n");
 	pthread_exit(0);
 	
 }
@@ -107,6 +111,10 @@ void *arrival_t(void *arg)
 {
 	//Emulate carpark Arrival, send carps to the carpark enter thread
 	fprintf(stderr,"Arrival Ran\n");
+	printf("\tCar Created:\n");
+	CarQueue *_carQueue = arg;
+	_carQueue->size = _carQueue->size+1;
+    printf("\tCars in Queue: %d\n", _carQueue->size);
 	pthread_exit(0);
 	
 }
