@@ -28,6 +28,8 @@ pthread_attr_init(), pthread_create(), pthread_exit(), pthread_join(), etc.
 #define CAR_SIZE 12
 #define CARID_NUMBER_MIN 10000000
 #define CARID_NUMBER_MAX 99999999
+#define FALSE 0
+#define TRUE !FALSE
 
 
 
@@ -62,18 +64,17 @@ int main()
 	pthread_t deaparture;
 	pthread_t monitor;
 	CarPark _carPark;
-
-	//pthread_t tid; /* the thread identifier */
-    // pthread_attr_t attr; /* set of attributes for the thread */
-
-    /* get the default attributes */
-    //pthread_attr_init(&attr);
-
+	
+	_carPark.keep_running = TRUE;
+	_carPark.size = 0;
+	
     /* create the threads */
     pthread_create(&arrival,NULL,arrival_t,&_carPark);
 
     /* now wait for the thread to exit */
     pthread_join(arrival,NULL); 
+
+	return 0;
 
 }
 
