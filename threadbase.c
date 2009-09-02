@@ -1,3 +1,6 @@
+//implement mutex lock
+
+
 /*
 pthread_attr_init(), pthread_create(), pthread_exit(), pthread_join(), etc.
 */
@@ -51,8 +54,7 @@ typedef struct {
 	CarStorage queue;
 	} CarPark;
 
-
-
+pthread_mutex_t mutex;
 
 /*functions from skeleton*/
 void *monitor_t(void *arg); /* thread */
@@ -93,6 +95,9 @@ int main()
 
 
     /* now wait for the thread to exit */
+//	_cp.queue.keep_running = FALSE;
+//	_cp.parks.keep_running = FALSE;
+	
     pthread_join(carparkEnter,NULL); 
 	pthread_join(arrival,NULL); 
 
@@ -106,12 +111,14 @@ int main()
 void addCar(char *car, void *arg)
 {
 	CarPark *_carPark = arg;
-	
+	pthread_mutex_lock(&mutex);
 	_carPark->parks.size = _carPark->parks.size+1;
 	//not tested, should wrap around once it meets max size
 	_carPark->parks.buffer[(_carPark->parks.index)] = car; 
-		printf("Car %s now in CarPark: ", car);
-		printf(" Spots Remaining %d: \n", CAR_PARK_SIZE-_carPark->parks.size);
+	printf("Car %s now in CarPark: ", car);
+	printf(" Spots Remaining %d: \n", CAR_PARK_SIZE-_carPark->parks.size);
+	_carPark->queue.size = _carPark->queue.size-1;
+	pthread_mutex_unlock(&mutex);
 	//TODO add time
 			
 
@@ -123,10 +130,12 @@ void removeCar(void *arg)
 {
   //remove a car form the struct	
   //remove the 1st car from the struct and shuffle them all down?
+	pthread_mutex_lock(&mutex);
 	CarPark *_carPark = arg;
 	_carPark->queue.buffer[_carPark->queue.index] = "";
 	_carPark->queue.index = _carPark->queue.index+1 % MAX_QUEUE;
 	_carPark->queue.size = _carPark->queue.size-1;
+	pthread_mutex_unlock(&mutex);
   
 }
 
@@ -170,6 +179,7 @@ void *arrival_t(void *arg)
 	fprintf(stderr,"Arrival Ran\n");
 	CarPark *_carPark = arg;
 	
+	
 	while (_carPark->queue.keep_running)
 	{
 		if  (_carPark->queue.size < MAX_QUEUE)
@@ -178,10 +188,12 @@ void *arrival_t(void *arg)
 			int _rand = RAND(0,100); //probability of a car arriving
 			if (_rand >= ARRIVAL_PERCENT_ACTION)
 			{	
+				pthread_mutex_lock(&mutex);
 				_carPark->queue.size = _carPark->queue.size+1;
 				_carPark->queue.buffer[((_carPark->queue.index + _carPark->queue.size) % CAR_PARK_SIZE)-1] = newCar(); 
 				printf("Arriving Car: %s\n", _carPark->queue.buffer[((_carPark->queue.index + _carPark->queue.size) % CAR_PARK_SIZE)-1]);
 				printf("\tCars in Queue: %d\n", _carPark->queue.size); //this is for testing only
+				pthread_mutex_unlock(&mutex);
 
 				sleep(1);
 			}
@@ -193,6 +205,7 @@ void *arrival_t(void *arg)
 		}
 	}
 	
+	return NULL;
 //	pthread_exit(0);
 	
 }
@@ -208,7 +221,7 @@ void *carpark_t(void *arg)
 
 	fprintf(stderr,"CarPark Ran\n");
 
-	while (_carPark->parks.keep_running)
+	while (1)//(_carPark->parks.keep_running)
 	{
 		//accept cars
 
@@ -218,14 +231,17 @@ void *carpark_t(void *arg)
 
 			if (_carPark->queue.size > 0)
 			{
+				pthread_mutex_lock(&mutex);
 				addCar(_carPark->queue.buffer[_carPark->queue.index % MAX_QUEUE], &_carPark);
-//				sleep(1);
-				} else
-				{
-				//no cars waiting
-					printf("CarPark has no cars waiting to enter\n");
-					sleep(1);
-				}
+				pthread_mutex_unlock(&mutex);
+				sleep(1);
+			} else
+			{
+			//no cars waiting
+				printf("CarPark has no cars waiting to enter\n");
+				printf("Carpark says queue size is: %d\n", _carPark->queue.size);
+				sleep(1);
+			}
 
 			} else
 					{
@@ -234,7 +250,9 @@ void *carpark_t(void *arg)
 		}
 
 		printf("I RAN\n");
+		sleep(1);
 	}
+	return NULL;
 
 	//pthread_exit(0);
 
