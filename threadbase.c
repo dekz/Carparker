@@ -78,7 +78,7 @@ int main()
 	pthread_t deaparture;
 	pthread_t monitor;
 
-	
+	pthread_mutex_init(&mutex, NULL);
 	//Define our carpark
 	CarPark _cp;
 	_cp.parks.size = 0;
@@ -179,7 +179,6 @@ void *arrival_t(void *arg)
 	fprintf(stderr,"Arrival Ran\n");
 	CarPark *_carPark = arg;
 	
-	
 	while (_carPark->queue.keep_running)
 	{
 		if  (_carPark->queue.size < MAX_QUEUE)
@@ -193,9 +192,10 @@ void *arrival_t(void *arg)
 				_carPark->queue.buffer[((_carPark->queue.index + _carPark->queue.size) % CAR_PARK_SIZE)-1] = newCar(); 
 				printf("Arriving Car: %s\n", _carPark->queue.buffer[((_carPark->queue.index + _carPark->queue.size) % CAR_PARK_SIZE)-1]);
 				printf("\tCars in Queue: %d\n", _carPark->queue.size); //this is for testing only
+				printf("\tCars in CarPark: %d\n", _carPark->parks.size);
 				pthread_mutex_unlock(&mutex);
 
-				sleep(1);
+				sleep(3);
 			}
 		}
 		else 
@@ -218,9 +218,7 @@ void *carpark_t(void *arg)
 
 	CarPark *_carPark = arg;
 
-
 	fprintf(stderr,"CarPark Ran\n");
-
 	while (1)//(_carPark->parks.keep_running)
 	{
 		//accept cars
