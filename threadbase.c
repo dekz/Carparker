@@ -225,7 +225,7 @@ void *arrival_t(void *arg)
 					_carPark->busy = 1;
 					_carPark->queue.size = _carPark->queue.size+1;
 					_carPark->queue.buffer[((_carPark->queue.index + _carPark->queue.size) % MAX_QUEUE)] = newCar(); 
-					printf("Arriving Car: %s\n", _carPark->queue.buffer[((_carPark->queue.index + _carPark->queue.size) % CAR_PARK_SIZE)-1]);
+					printf("Arriving Car: %s\n", _carPark->queue.buffer[((_carPark->queue.index + _carPark->queue.size) % MAX_QUEUE)]);
 //					printf("\tCars in Queue: %d\n", _carPark->queue.size); //this is for testing only
 //					printf("\tCars in CarPark: %d\n", _carPark->parks.size);
 					_carPark->busy = 0;
