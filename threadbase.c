@@ -19,6 +19,7 @@ pthread_attr_init(), pthread_create(), pthread_exit(), pthread_join(), etc.
 #define CAR_PARK "Phoenix Car Park"
 /* max number of cars the carpark can hold */
 #define CAR_PARK_SIZE 10
+#define MAX_QUEUE 10
 /* prob of arrival of car */
 #define ARRIVAL_PERCENT_ACTION 60
 /* prob of departure of car */
@@ -34,7 +35,7 @@ pthread_attr_init(), pthread_create(), pthread_exit(), pthread_join(), etc.
 #define FALSE 0
 #define TRUE !FALSE
 
-#define MAX_QUEUE 10
+
 
 
 /* An example of the data structure of the Car Park. You may define your own car park */
@@ -223,7 +224,7 @@ void *arrival_t(void *arg)
 					pthread_mutex_lock(&mutex);
 					_carPark->busy = 1;
 					_carPark->queue.size = _carPark->queue.size+1;
-					_carPark->queue.buffer[((_carPark->queue.index + _carPark->queue.size) % CAR_PARK_SIZE)-1] = newCar(); 
+					_carPark->queue.buffer[((_carPark->queue.index + _carPark->queue.size) % MAX_QUEUE)] = newCar(); 
 					printf("Arriving Car: %s\n", _carPark->queue.buffer[((_carPark->queue.index + _carPark->queue.size) % CAR_PARK_SIZE)-1]);
 //					printf("\tCars in Queue: %d\n", _carPark->queue.size); //this is for testing only
 //					printf("\tCars in CarPark: %d\n", _carPark->parks.size);
@@ -287,7 +288,8 @@ void *carpark_t(void *arg)
 				sleep(1);
 			} else 
 			{
-				printf("CarPark is full\n");
+				printf("CarPark is full, sleeping\n");
+				sleep(10);
 			}
 		}
 		sleep(1);
