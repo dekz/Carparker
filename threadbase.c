@@ -62,6 +62,7 @@ void *monitor_t(void *arg); /* thread */
 void *arrival_t(void *arg);  /* thread */
 void *carpark_t(void *arg);  /* thread */
 void *departure_t(void *arg);  /* thread */
+void *watcher_t(void *arg);
 void addCar(char *car, void *arg);
 void removeCar();
 void showCars();
@@ -78,6 +79,8 @@ int main()
 	pthread_t carparkEnter;
 	pthread_t deaparture;
 	pthread_t monitor;
+	
+	pthread_t watcher;
 
 	pthread_mutex_init(&mutex, NULL);
 	//Define our carpark
@@ -93,7 +96,7 @@ int main()
     /* create the threads */
 	pthread_create(&carparkEnter,NULL,carpark_t,&_cp);
     pthread_create(&arrival,NULL,arrival_t,&_cp);
-	
+	pthread_create(&watcher,NULL,watcher_t,&_cp);
 
 
     /* now wait for the thread to exit */
@@ -101,6 +104,7 @@ int main()
 //	_cp.parks.keep_running = FALSE;
 	
     pthread_join(carparkEnter,NULL); 
+	pthread_join(watcher,NULL);
 	pthread_join(arrival,NULL); 
 
 	pthread_mutex_destroy(&mutex);
@@ -108,27 +112,39 @@ int main()
 
 }
 
-//presumably the method which carpark calls to add a car to its struct
-//
-void addCar(char *car, void *arg)
+void *watcher_t(void *arg)
 {
 	CarPark *_carPark = arg;
 	
-	if (!_carPark->busy)
-	{
-		
+	while (1)
+	{ 
+		printf("Watcher - CarParkSize: %d\n", _carPark->parks.size);
+		printf("Watcher - CarQueueSize: %d\n", _carPark->queue.size);
+		sleep(5);
+	}
+}
+
+//presumably the method which carpark calls to add a car to its struct
+//
+//this isn't working and it's just retarded
+void addCar(char *car, void *arg)
+{
+	CarPark *_carPark = arg;
+//	if (!_carPark->busy)
+//	{
+		printf("ADDCAR RUN\n");
 		pthread_mutex_lock(&mutex);
 		_carPark->busy = 1;
 		_carPark->parks.size = _carPark->parks.size+1;
 		//not tested, should wrap around once it meets max size
 		_carPark->parks.buffer[(_carPark->parks.index)] = car; 
-		printf("Car %s now in CarPark: ", car);
+		printf("Car %s now in CarPark: ", _carPark->parks.buffer[(_carPark->parks.index)]);
 		printf(" Spots Remaining %d: \n", CAR_PARK_SIZE-_carPark->parks.size);
-		removeCar(&_carPark);
 		_carPark->busy = 0;
 		pthread_mutex_unlock(&mutex);
+		removeCar(&_carPark);
 		//TODO add time
-	}
+//	}
 			
 
 }
@@ -148,6 +164,7 @@ void removeCar(void *arg)
 		_carPark->queue.index = _carPark->queue.index+1 % MAX_QUEUE;
 		_carPark->queue.size = _carPark->queue.size-1;
 		_carPark->busy = 0;
+		printf("Car Removed from Queue");
 		pthread_mutex_unlock(&mutex);
 	}
   
@@ -190,12 +207,10 @@ void *monitor_t(void *arg)
 void *arrival_t(void *arg) 
 {
 	//Emulate carpark Arrival, send carps to the carpark enter thread
-	fprintf(stderr,"Arrival Ran\n");
 	CarPark *_carPark = arg;
 	
 	while (_carPark->queue.keep_running)
 	{
-		printf("Arrival trying to run\n");
 		
 		if  (_carPark->queue.size < MAX_QUEUE)
 		{
@@ -210,12 +225,12 @@ void *arrival_t(void *arg)
 					_carPark->queue.size = _carPark->queue.size+1;
 					_carPark->queue.buffer[((_carPark->queue.index + _carPark->queue.size) % CAR_PARK_SIZE)-1] = newCar(); 
 					printf("Arriving Car: %s\n", _carPark->queue.buffer[((_carPark->queue.index + _carPark->queue.size) % CAR_PARK_SIZE)-1]);
-					printf("\tCars in Queue: %d\n", _carPark->queue.size); //this is for testing only
-					printf("\tCars in CarPark: %d\n", _carPark->parks.size);
+//					printf("\tCars in Queue: %d\n", _carPark->queue.size); //this is for testing only
+//					printf("\tCars in CarPark: %d\n", _carPark->parks.size);
 					_carPark->busy = 0;
 					pthread_mutex_unlock(&mutex);
 
-					sleep(3);
+					sleep(1);
 				}
 			}
 		}
@@ -240,43 +255,43 @@ void *carpark_t(void *arg)
 	CarPark *_carPark = arg;
 
 	fprintf(stderr,"CarPark Ran\n");
-	while (1)//(_carPark->parks.keep_running)
+	while (_carPark->parks.keep_running)
 	{
 		//accept cars
-		printf("CarPark trying to run\n");
-
-		if (_carPark->parks.size < CAR_PARK_SIZE)
+		int queuesize;
+		int carparksize;
+		queuesize = _carPark->queue.size;
+		carparksize = _carPark->parks.size;
+		
+		if (queuesize > 0)
 		{
-			//load a car
-
-			if (_carPark->queue.size > 0)
+			if (carparksize < CAR_PARK_SIZE)
 			{
-				if (!_carPark->busy)
-				{
+				//addCar(_carPark->queue.buffer[_carPark->queue.index % MAX_QUEUE], &_carPark);
+				pthread_mutex_lock(&mutex);
+				_carPark->busy = 1;
+				char *car;
+				//add the car to the car park
+				car = _carPark->queue.buffer[_carPark->queue.index % MAX_QUEUE];
+				_carPark->parks.buffer[(_carPark->parks.index)] = car; 
+				_carPark->parks.size = _carPark->parks.size+1;
 				
-					pthread_mutex_lock(&mutex);
-					_carPark->busy = 1;
-					addCar(_carPark->queue.buffer[_carPark->queue.index % MAX_QUEUE], &_carPark);
-					_carPark->busy = 0;
-					pthread_mutex_unlock(&mutex);
-					sleep(1);
-				}
-			} else
-			{
-			//no cars waiting
-				printf("CarPark has no cars waiting to enter\n");
-				printf("Carpark says queue size is: %d\n", _carPark->queue.size);
+				//clean up the carpark queue
+				_carPark->queue.buffer[_carPark->queue.index] = "";
+				_carPark->queue.index = _carPark->queue.index+1 % MAX_QUEUE;
+				_carPark->queue.size = _carPark->queue.size-1;
+				printf("%s now in the CarPark\n", car);
+				
+				_carPark->busy = 0;
+				pthread_mutex_unlock(&mutex);
 				sleep(1);
+			} else 
+			{
+				printf("CarPark is full\n");
 			}
-
-			} else
-					{
-			printf("CarPark is full\n");
-			sleep(TIME_OUT_SLEEP);
 		}
-
-		printf("I RAN\n");
 		sleep(1);
+		
 	}
 	return NULL;
 
