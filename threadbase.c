@@ -1,6 +1,3 @@
-//implement mutex lock
-
-
 /*
 pthread_attr_init(), pthread_create(), pthread_exit(), pthread_join(), etc.
 */
@@ -65,25 +62,27 @@ void *carpark_t(void *arg);  /* thread */
 void *departure_t(void *arg);  /* thread */
 void *watcher_t(void *arg);
 void addCar(char *car, void *arg);
-void removeCar();
-void showCars();
+void removeCar(void *arg);
+void showCars(void *arg);
 char* newCar();
 int  thread_sleep(int time_out_ms);
 char *time_stamp();
 char get_key();
 void exit_with_error(char *message);
+void cleanCarPark(void *arg);
 
 int main()
 {
 
 	pthread_t arrival;
 	pthread_t carparkEnter;
-	pthread_t deaparture;
+	pthread_t departure;
 	pthread_t monitor;
 	
 	pthread_t watcher;
 
 	pthread_mutex_init(&mutex, NULL);
+	
 	//Define our carpark
 	CarPark _cp;
 	_cp.parks.size = 0;
@@ -94,10 +93,17 @@ int main()
 	_cp.queue.keep_running = TRUE;
 	_cp.busy = 0;
 	
+	int i;
+	for (i = 0; i <=CAR_PARK_SIZE; i++)
+		_cp.parks.buffer[i] = "";
+	for (i = 0; i <=MAX_QUEUE; i++)
+		_cp.queue.buffer[i] = "";
+	
     /* create the threads */
 	pthread_create(&carparkEnter,NULL,carpark_t,&_cp);
     pthread_create(&arrival,NULL,arrival_t,&_cp);
 	pthread_create(&watcher,NULL,watcher_t,&_cp);
+	pthread_create(&departure,NULL,departure_t,&_cp);
 
 
     /* now wait for the thread to exit */
@@ -107,6 +113,7 @@ int main()
     pthread_join(carparkEnter,NULL); 
 	pthread_join(watcher,NULL);
 	pthread_join(arrival,NULL); 
+	pthread_join(departure,NULL);
 
 	pthread_mutex_destroy(&mutex);
 	return 0;
@@ -119,257 +126,251 @@ void *watcher_t(void *arg)
 	
 	while (1)
 	{ 
-		printf("Watcher - CarParkSize: %d\n", _carPark->parks.size);
-		printf("Watcher - CarQueueSize: %d\n", _carPark->queue.size);
-		sleep(5);
+		printf("Watcher - CPSize: %d", _carPark->parks.size);
+		printf(" CQSize: %d", _carPark->queue.size);
+		printf(" CQIndex: %d\n", _carPark->queue.index);
+		thread_sleep(200);
 	}
 }
 
-//presumably the method which carpark calls to add a car to its struct
-//
-//this isn't working and it's just retarded
+int  thread_sleep(int time_out_ms)
+{
+	clock_t limit, now = clock();
+	limit = now + (time_out_ms/100) * CLOCKS_PER_SEC;
+	while ( limit > now )
+	{
+	   now = clock();
+	}
+}
+
 void addCar(char *car, void *arg)
 {
-	CarPark *_carPark = arg;
-//	if (!_carPark->busy)
-//	{
-		printf("ADDCAR RUN\n");
-		pthread_mutex_lock(&mutex);
-		_carPark->busy = 1;
-		_carPark->parks.size = _carPark->parks.size+1;
-		//not tested, should wrap around once it meets max size
-		_carPark->parks.buffer[(_carPark->parks.index)] = car; 
-		printf("Car %s now in CarPark: ", _carPark->parks.buffer[(_carPark->parks.index)]);
-		printf(" Spots Remaining %d: \n", CAR_PARK_SIZE-_carPark->parks.size);
-		_carPark->busy = 0;
-		pthread_mutex_unlock(&mutex);
-		removeCar(&_carPark);
-		//TODO add time
-//	}
-			
+	char *_car = car;
+	CarPark *_cp = arg;
+	int _cpsize = _cp->parks.size;
+	pthread_mutex_lock(&mutex);
+	
+	//take the first car in the queue and add it to the CarPark
+	//carpark has random spots missing, traverse through list looking for blank
 
+	if (_cpsize == 0)
+	{
+		//can throw it in anywhere
+		_cp->parks.buffer[0] = car;
+		_cp->parks.size = 1;
+		printf("[C] Car Parked -> %s \n", _cp->parks.buffer[0]);
+	}
+	else if (_cpsize == CAR_PARK_SIZE)
+	{
+		//car park is full
+		printf("[C] CarPark is full\n");
+	} else
+	{
+		int i;
+		for (i = 0; i <= CAR_PARK_SIZE; i +=1)
+		{
+			if ((!_cp->parks.buffer[i]) || (_cp->parks.buffer[i] == ""))
+			{
+				//found an empty spot
+				_cp->parks.buffer[i] = car;
+				_cp->parks.size = _cpsize+1;
+				break;
+			}
+		}
+		printf("[C] Car Parked -> %s \n", car);
+	}
+		
+	pthread_mutex_unlock(&mutex);
+	
 }
 
-
-//****UNTESTED*****
 void removeCar(void *arg)
 {
-  //remove a car form the struct	
-  //remove the 1st car from the struct and shuffle them all down?
-	CarPark *_carPark = arg;
-	if (!_carPark->busy)
+	CarPark *_cp = arg;
+	int _rand = 0;
+	//depart some cars 
+	pthread_mutex_lock(&mutex);
+	
+	_rand = RAND(0,_cp->parks.size);
+	//implement a shuffle down method, recursive
+	cleanCarPark(_cp);
+	if (_cp->parks.size == 1)
 	{
-		pthread_mutex_lock(&mutex);
-		_carPark->busy = 1;
-		_carPark->queue.buffer[_carPark->queue.index] = "";
-		_carPark->queue.index = _carPark->queue.index+1 % MAX_QUEUE;
-		_carPark->queue.size = _carPark->queue.size-1;
-		_carPark->busy = 0;
-		printf("Car Removed from Queue");
-		pthread_mutex_unlock(&mutex);
+		_rand = 0;
 	}
-  
+	
+	if (_cp->parks.buffer[_rand] != "")
+	{
+		printf("[D] Car Departing -> %s\n", _cp->parks.buffer[_rand]);
+		_cp->parks.buffer[_rand] = "";
+		_cp->parks.size -= 1;
+		cleanCarPark(_cp);
+	} else
+	{
+		printf("[D] No cars to remove\n");
+		thread_sleep(TIME_OUT_SLEEP);
+	}
+	
+	pthread_mutex_unlock(&mutex);
 }
 
-void showCars()
+void removeCarQueue(void *arg)
 {
-	//iterate over and display cars
+	CarPark *_cp = arg;
+	
+	pthread_mutex_lock(&mutex);
+	
+	_cp->queue.buffer[_cp->queue.index] = "";
+	_cp->queue.index = (_cp->queue.index+1) % MAX_QUEUE;
+	_cp->queue.size -= 1;
+	
+	pthread_mutex_unlock(&mutex);
+}
+
+void showCars(void *arg)
+{
+	CarPark *_cp = arg;
+	int j;
+	printf("[#] Displaying Cars \n");
+	for (j=1; j <= CAR_PARK_SIZE; j++)
+	{
+		printf("| %s |", _cp->parks.buffer[j]);
+	}
+	printf("\n");
+}
+
+
+void cleanCarPark(void *arg)
+{
+	//this method will clean up the carpark, if it finds an empty slot, it will shuffle the following down
+	
+	CarPark *_cp = arg;
+	
+	int i = 0;
+	int j = 0;
+	
+	if ((_cp->parks.size > 1) && (_cp->parks.size != CAR_PARK_SIZE))
+	{
+		for (i=0; i <= _cp->parks.size; i++)
+		{
+			if (_cp->parks.buffer[i] == "")
+			{
+				for (j=i; j <= _cp->parks.size-1; j++)
+				{
+					//i is blank, move j to i and more the rest down
+					_cp->parks.buffer[j] == _cp->parks.buffer[j+1];
+					printf("[D] Swapping %s", _cp->parks.buffer[j]);
+					printf(" and %s \n", _cp->parks.buffer[j+1]);
+				}
+				
+				
+			}
+		}
+	}
+	showCars(_cp);
 }
 
 char* newCar()
 {
 	int i;
 	i = RAND(CARID_NUMBER_MIN,CARID_NUMBER_MAX);
-		
-	char* str = malloc(sizeof *str *10);
-	sprintf(str,"%d",i); //sets to string
+	char* str = malloc(sizeof *str *12);
+	char test[2];
+	char *numberid;
+	
+	sprintf(str,"%d",i);
 
+ 	// int a = rand() % ('Z' - 'A' + 1); 
+ 	// char c = (char)(a+65); 
+ 	//  
+ 	// sprintf(numberid, "%c", c);
+ 	// printf("%c\n", numberid);
 	return str;
 }
 
-
-
-
-void *monitor_t(void *arg) 
+void *monitor_t(void *arg)
 {
-	//(check every 25ms for user pressing keyboard)
-	//Listens for user input 
-	//Text terminal input, 
-	//	q or Q terminates (stops GRACEFULLY)
-	//	c or C print out the carpark list
-	fprintf(stderr,"Monitor Ran\n");
-	//pthread_exit(0);
+	CarPark *_cp = arg;
 	
 }
 
-
-//rewrite the index part
-
-void *arrival_t(void *arg) 
+void *arrival_t(void *arg)
 {
-	//Emulate carpark Arrival, send carps to the carpark enter thread
-	CarPark *_carPark = arg;
-	
-	while (_carPark->queue.keep_running)
+	CarPark *_cp = arg;
+	while (_cp->queue.keep_running)
 	{
-		
-		if  (_carPark->queue.size < MAX_QUEUE)
+		int _queuesize = _cp->queue.size;
+		if (_queuesize < MAX_QUEUE)
 		{
-			
+		
 			int _rand = RAND(0,100); //probability of a car arriving
-			if (_rand >= ARRIVAL_PERCENT_ACTION)
-			{	
-				if (!_carPark->busy)
-				{
-					pthread_mutex_lock(&mutex);
-					_carPark->busy = 1;
-					_carPark->queue.size = _carPark->queue.size+1;
-					_carPark->queue.buffer[((_carPark->queue.index + _carPark->queue.size) % MAX_QUEUE)] = newCar(); 
-					printf("Arriving Car: %s\n", _carPark->queue.buffer[((_carPark->queue.index + _carPark->queue.size) % MAX_QUEUE)]);
-//					printf("\tCars in Queue: %d\n", _carPark->queue.size); //this is for testing only
-//					printf("\tCars in CarPark: %d\n", _carPark->parks.size);
-					_carPark->busy = 0;
-					pthread_mutex_unlock(&mutex);
-
-					sleep(1);
-				}
-			}
-		}
-		else 
-		{
-			printf("CarPark Queue has reached max size, sleeping\n");
-			sleep(TIME_OUT_SLEEP);
-		}
-	}
-	
-	return NULL;
-//	pthread_exit(0);
-	
-}
-
-void *carpark_t(void *arg) 
-{
-	//Looks in the waiting queue and if there is room it brings a new car in
-	//if number is even goes to entrance 2, if odd goes to entrance 1
-	//if carpark is at max size, thread blocks and prints message
-
-	CarPark *_carPark = arg;
-
-	fprintf(stderr,"CarPark Ran\n");
-	while (_carPark->parks.keep_running)
-	{
-		//accept cars
-		int queuesize;
-		int carparksize;
-		queuesize = _carPark->queue.size;
-		carparksize = _carPark->parks.size;
-		
-		if (queuesize > 0)
-		{
-			if (carparksize < CAR_PARK_SIZE)
+			printf("PROBABILITY OF CAR ARRIVING: %d\n", _rand);
+			if (_rand <= ARRIVAL_PERCENT_ACTION)
 			{
-				//addCar(_carPark->queue.buffer[_carPark->queue.index % MAX_QUEUE], &_carPark);
+				//create a car
 				pthread_mutex_lock(&mutex);
-				_carPark->busy = 1;
-				char *car;
-				//add the car to the car park
-				car = _carPark->queue.buffer[_carPark->queue.index % MAX_QUEUE];
-				_carPark->parks.buffer[(_carPark->parks.index)] = car; 
-				_carPark->parks.size = _carPark->parks.size+1;
+			
+				_cp->queue.size = _queuesize+1;
+				_cp->queue.index = (_cp->queue.index+1) % MAX_QUEUE; //wrap around
+				_cp->queue.buffer[_cp->queue.index] = newCar();
+				printf("[A] Arriving car -> %s\n", _cp->queue.buffer[_cp->queue.index]);
 				
-				//clean up the carpark queue
-				_carPark->queue.buffer[_carPark->queue.index] = "";
-				_carPark->queue.index = _carPark->queue.index+1 % MAX_QUEUE;
-				_carPark->queue.size = _carPark->queue.size-1;
-				printf("%s now in the CarPark\n", car);
-				
-				_carPark->busy = 0;
 				pthread_mutex_unlock(&mutex);
-				sleep(1);
-			} else 
-			{
-				printf("CarPark is full, sleeping\n");
-				sleep(10);
-			}
-		}
-		sleep(1);
-		
-	}
-	return NULL;
-
-	//pthread_exit(0);
-
-}
-
-void *departure_t(void *arg) 
-{
-	//emulates cars departing
-	//randomly selects a car from the car park and attempts to remove it
-	//works out time spent in carpark
-	CarStorage *_carPark = arg;
-	
-	fprintf(stderr,"Departure Ran\n");
-	while (_carPark->keep_running)
-	{
-		//depart cars
-		if (_carPark->size > 0)
-		{
-			int _rand = RAND(0,100); //probability of a car departing
-			if (_rand >= DEPARTURE_PERCENT_ACTION)
-			{
-				
 			}
 			
 		} else
 		{
-			sleep(TIME_OUT_SLEEP);
+			printf("[A] Queue is full\n");
+			thread_sleep(TIME_OUT_SLEEP);
 		}
+		
 	}
-	
-	pthread_exit(0);
 	
 }
 
+void *carpark_t(void *arg)
+{
+	CarPark *_cp = arg;	
+	while (_cp->parks.keep_running)
+	{
+		
+		if (_cp->queue.size > 0)
+		{
 
+			addCar(_cp->queue.buffer[_cp->queue.index % MAX_QUEUE], _cp);
+			removeCarQueue(_cp);	
+			thread_sleep(TIME_OUT_SLEEP);
+		}
+		else
+		{
+			printf("[C] no cars in queue\n");
+			thread_sleep(TIME_OUT_SLEEP);
+		}
+	}
+	
+}
 
-
-/*
-
-Just project brainstorming:
-
-Producer Consumer pattern (week 4 lec)
-
-Threads:
-
-Arrival Thread (possibly 2 of these)
- One for the waiting queue
- One for the carpark
- Emulates carpark arrival 
- Creates the cars and sends them to the CarparkEnter thread
- Cars are identified by 2 Characters and 8 digits, eg XY01234567
-
-CarparkEnter Thread
- Looks in the waiting queue and if there is room brings a new car into the car park
- If the number is even than it goes into entrance 2, if it is odd it goes into entrance 1
- If Carpark is at max, thread blocks, prints message
- If the waiting queue is empty, carpark Enter also blocks, prints message
-
-Departure Thread
- Emulates cars departing (continious)
- Randomly selects a car from the car park and attempts to remove it
- Needs to work out time spent in car park
-
-Monitor Thread
- (check every 25ms for user pressing keyboard)
- Listens for user input 
- Text terminal input, 
-	q or Q terminates (stops GRACEFULLY)
-	c or C print out the carpark list 
-
-Resources:
- WaitingQueue (list, vector, array what ever)
- CarPark (list, vector, array what ever) shared by CarParkEnter thread and Departure Thread, has methods addCar, removeCar
-
-Attributes:
- Car has a time entered into carpark 
-*/
+void *departure_t(void *arg)
+{
+	CarPark *_cp = arg;
+	while (_cp->parks.keep_running)
+	{
+		if (_cp->parks.size > 0)
+		{
+			//remove some cars
+			int _rand = RAND(0,100); //probability of a car arriving
+			if (_rand <= DEPARTURE_PERCENT_ACTION)
+			{
+				removeCar(_cp);
+				thread_sleep(TIME_OUT_SLEEP);
+			}
+		}
+		else 
+		{
+			printf("[D] No cars to depart, sleeping\n");
+			thread_sleep(TIME_OUT_SLEEP);
+			
+		}
+		
+	}
+}
