@@ -11,7 +11,7 @@ task :compile do
 
   Dir.chdir(PROJECT_ROOT) do
     %x(rm -f #{BIN})
-    %x(gcc -Wall -o #{BIN} #{SRC})
+    %x(gcc -Wall -pthread -o #{BIN} #{SRC})
     %x(chmod +x #{BIN})
   end
 end
