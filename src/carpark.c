@@ -2,13 +2,12 @@
 #include <stdlib.h>
 #include <time.h>
 #include <sys/time.h>
+#include <sys/types.h>
 #include <unistd.h>
 #include <pthread.h>
-#include <semaphore.h>
 #include <string.h>
 #include <errno.h>
 #include <ctype.h>
-
 
 /* name of the carpark */
 #define CAR_PARK "Phoenix Car Park"
@@ -57,6 +56,7 @@ char get_key();
 void exit_with_error(char *message);
 int is_carpark_full();
 int is_carpark_empty();
+int input_available();
 void start_threads();
 void join_threads();
 
@@ -69,7 +69,6 @@ pthread_t t_monitor;
 int main() {
     printf("Welcome to %s!\n", CAR_PARK);
     start_threads();
-    
     join_threads();
     exit(0);
 }
@@ -95,21 +94,27 @@ void join_threads() {
 void *monitor(void *arg) {
     char c;
     
-    while( c = getchar() ) {
-		if(c=='Q'||c=='q') {
-            printf("Quitting...\n");
+    while(TRUE) {
+        if(input_available() > 0) {
+            c = getchar();
             
-            pthread_cancel(t_enter_carpark);
-            pthread_cancel(t_departure);
-            pthread_cancel(t_arrival_queue);
-            
-            break;
-        } else if(c=='C'||c=='c') {
-            printf("Printing summary...\n");
-        } else {
-            printf("Invalid key. Use either Q or C\n");
+            if(c=='Q'||c=='q') {
+                printf("Quitting...\n");
+
+                pthread_cancel(t_enter_carpark);
+                pthread_cancel(t_departure);
+                pthread_cancel(t_arrival_queue);
+
+                break;
+            } else if(c=='C'||c=='c') {
+                printf("Printing summary...\n");
+            } else {
+                printf("Invalid key. Use either Q or C\n");
+            }
         }
-	}
+        
+        thread_sleep(25);
+    }
     
     return NULL;
 }
@@ -180,4 +185,21 @@ int thread_sleep(int ms) {
 
 int thread_sleep_default() {
     return thread_sleep(TIME_OUT_SLEEP);
+}
+
+// 0 on timeout, 1 on input available, -1 on error
+int input_available() {
+
+    fd_set input;// = malloc(sizeof(fd_set));
+
+    FD_ZERO (&input);
+    FD_SET (stdin, &input);
+
+    return 1;
+
+    struct timeval timeout;
+    timeout.tv_sec = 0;
+    timeout.tv_usec = 0;
+
+    return select(FD_SETSIZE, &input, NULL, NULL, &timeout);
 }
