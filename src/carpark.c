@@ -3,11 +3,11 @@
 #include <time.h>
 #include <sys/time.h>
 #include <sys/types.h>
-#include <unistd.h>
 #include <pthread.h>
 #include <string.h>
 #include <errno.h>
 #include <ctype.h>
+// #include <curses.h> // try to use this to control quitting/summarising/viewing, etc
 
 /* name of the carpark */
 #define CAR_PARK "Phoenix Car Park"
@@ -56,7 +56,7 @@ char get_key();
 void exit_with_error(char *message);
 int is_carpark_full();
 int is_carpark_empty();
-int input_available();
+int kbhit();
 void start_threads();
 void join_threads();
 
@@ -95,7 +95,7 @@ void *monitor(void *arg) {
     char c;
     
     while(TRUE) {
-        if(input_available() > 0) {
+        if(kbhit()) {
             c = getchar();
             
             if(c=='Q'||c=='q') {
@@ -111,6 +111,8 @@ void *monitor(void *arg) {
             } else {
                 printf("Invalid key. Use either Q or C\n");
             }
+            
+            c = NULL;
         }
         
         thread_sleep(25);
@@ -188,12 +190,12 @@ int thread_sleep_default() {
 }
 
 // 0 on timeout, 1 on input available, -1 on error
-int input_available() {
+int kbhit() {
 
     fd_set input;// = malloc(sizeof(fd_set));
 
     FD_ZERO (&input);
-    FD_SET (stdin, &input);
+    FD_SET (0, &input);
 
     return 1;
 
@@ -201,5 +203,8 @@ int input_available() {
     timeout.tv_sec = 0;
     timeout.tv_usec = 0;
 
-    return select(FD_SETSIZE, &input, NULL, NULL, &timeout);
+    if(select(1, &input, NULL, NULL, &timeout) == -1) return 0;
+    
+    if(FD_ISSET(0, &input)) return 1;
+    else return 0;
 }
