@@ -14,6 +14,7 @@ void join_threads();
 int thread_sleep_default();
 void stop_running();
 bool should_keep_running();
+void quit();
 
 // Threads
 pthread_mutex_t mutex;

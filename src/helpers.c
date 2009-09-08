@@ -17,6 +17,11 @@ bool should_keep_running() {
     return _cp.keep_running;
 }
 
+void quit() {
+    puts("Quitting...");
+    stop_running();
+}
+
 void stop_running() {
     // Doubt the mutex locking is
     // needed as nothing else modifies

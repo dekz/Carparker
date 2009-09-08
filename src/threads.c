@@ -11,8 +11,7 @@ void *monitor(void *arg) {
             c = getchar();
             
             if(c=='Q'||c=='q') {
-                printf("Quitting...\n");
-                stop_running();
+                quit();
             } else if(c=='C'||c=='c') {
                 printf("Printing summary...\n");
             } else {

@@ -5,6 +5,7 @@ int main() {
 
     _cp.keep_running = TRUE;
 
+    signal(SIGINT, quit);
     start_threads();
     join_threads();
     exit(0);
