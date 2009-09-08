@@ -1,10 +1,17 @@
+CC=gcc
+CFLAGS=-Wall -pthread
+COMMAND=$(CC) $(CFLAGS)
+
+SRC=src/*.c
+BIN=bin/carparker
+
 all: compile run
 
 compile: clean
-	gcc -Wall -pthread -o bin/carparker src/*.c
+	$(COMMAND) -o $(BIN) $(SRC)
 
 run:
-	bin/carparker
+	$(BIN)
 
 clean:
 	rm -f bin/*
