@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <sys/time.h>
-#include <sys/types.h>
 #include <pthread.h>
 #include <string.h>
 #include <errno.h>
 #include <ctype.h>
+#include <unistd.h>
+#include "keyboard.h"
 // #include <curses.h> // try to use this to control quitting/summarising/viewing, etc
 
 /* name of the carpark */
@@ -56,7 +56,6 @@ char get_key();
 void exit_with_error(char *message);
 int is_carpark_full();
 int is_carpark_empty();
-int kbhit();
 void start_threads();
 void join_threads();
 
@@ -96,7 +95,7 @@ void *monitor(void *arg) {
     
     while(TRUE) {
         if(kbhit()) {
-            c = getchar();
+            c = getch();
             
             if(c=='Q'||c=='q') {
                 printf("Quitting...\n");
@@ -187,24 +186,4 @@ int thread_sleep(int ms) {
 
 int thread_sleep_default() {
     return thread_sleep(TIME_OUT_SLEEP);
-}
-
-// 0 on timeout, 1 on input available, -1 on error
-int kbhit() {
-
-    fd_set input;// = malloc(sizeof(fd_set));
-
-    FD_ZERO (&input);
-    FD_SET (0, &input);
-
-    return 1;
-
-    struct timeval timeout;
-    timeout.tv_sec = 0;
-    timeout.tv_usec = 0;
-
-    if(select(1, &input, NULL, NULL, &timeout) == -1) return 0;
-    
-    if(FD_ISSET(0, &input)) return 1;
-    else return 0;
 }
