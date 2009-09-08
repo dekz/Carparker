@@ -1,5 +1,7 @@
 #include "keyboard.h"
 
+static struct termios previous_terminal_settings;
+
 // Thanks to http://www.linuxquestions.org/questions/showthread.php?p=1060488#post1060488
 void disable_terminal_flush() {
     tcsetattr(0, TCSANOW, &previous_terminal_settings);
