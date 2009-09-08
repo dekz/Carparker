@@ -15,3 +15,16 @@ char *get_car_id(Car *car) {
     sprintf(str, "%s%8d", (*car).str, (*car).id);
     return str;
 }
+
+void puts_example_car_id() {
+    puts("Example car ID generation:");
+    
+    int i;
+    Car c;
+    
+    for ( i = 0; i < 10; ++i )
+    {
+        c = new_car();
+        printf("%s\n", get_car_id(&c));
+    }
+}

@@ -3,20 +3,9 @@
 int main() {
     printf("Welcome to %s!\n", CAR_PARK);
     signal(SIGINT, quit);
-    
-    // char str[81];
-    // int i;
-
     srand(time(0));
 
-    // for ( i = 0; i < 80; ++i )
-    // {
-    //    str[i] = RandomChar();
-    // }
-    
-    // // Test car
-    Car c = new_car();
-    printf("%s\n", get_car_id(&c));
+    puts_example_car_id();
         
     start_threads();
     join_threads();
