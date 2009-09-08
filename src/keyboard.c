@@ -1,7 +1,7 @@
 #include "keyboard.h"
 
-void disable_terminal_flush()
-{
+// Thanks to http://www.linuxquestions.org/questions/showthread.php?p=1060488#post1060488
+void disable_terminal_flush() {
     tcsetattr(0, TCSANOW, &previous_terminal_settings);
 }
 
@@ -11,8 +11,7 @@ void disable_terminal_flush()
     to flush characters straight away and not echo them so we
     can capture characters as they are pressed
 */
-void enable_terminal_flush()
-{
+void enable_terminal_flush() {
     struct termios settings;
 
     // Previous settings are important (to restore)
