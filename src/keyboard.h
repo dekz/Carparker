@@ -8,4 +8,3 @@
 void disable_terminal_flush();
 void enable_terminal_flush();
 int kbhit();
-char getch();

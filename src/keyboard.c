@@ -43,8 +43,6 @@ int kbhit() {
     FD_ZERO (&input);
     FD_SET (0, &input);
 
-    return 1;
-
     struct timeval timeout;
     timeout.tv_sec = 0;
     timeout.tv_usec = 0;
@@ -53,11 +51,4 @@ int kbhit() {
     
     if(FD_ISSET(0, &input)) return 1;
     else return 0;
-}
-
-char getch() {
-    enable_terminal_flush();
-    char c = getchar();
-    disable_terminal_flush();
-    return c;
 }

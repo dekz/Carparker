@@ -13,19 +13,21 @@ int main() {
     printf("Welcome to %s!\n", CAR_PARK);
 
     _cp.keep_running = TRUE;
+
     start_threads();
     join_threads();
     exit(0);
 }
 
 void *monitor(void *arg) {
+    enable_terminal_flush();
     char c;
     
     while(_cp.keep_running) {
         thread_sleep(25);
         
         if(kbhit()) {
-            c = getch();
+            c = getchar();
             
             if(c=='Q'||c=='q') {
                 printf("Quitting...\n");
@@ -38,6 +40,7 @@ void *monitor(void *arg) {
         }
     }
     
+    disable_terminal_flush();
     return NULL;
 }
 
