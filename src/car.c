@@ -4,9 +4,8 @@
 Car new_car() {
     Car c;
     
-    c.id = RAND(CARID_NUMBER_MIN,CARID_NUMBER_MAX);
-    c.str[0] = random_letter();
-    c.str[1] = random_letter();
+    c.id  = RAND(CARID_NUMBER_MIN,CARID_NUMBER_MAX);
+    random_string(c.str);
     
     return c;
 }

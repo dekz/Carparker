@@ -2,7 +2,7 @@
 #define _CAR_H_
 
 typedef struct {
-    char str[2];
+    char str[3];
     int id;
 } Car;
 

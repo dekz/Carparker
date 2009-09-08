@@ -36,6 +36,23 @@ void stop_running() {
     pthread_mutex_unlock(&mutex);
 }
 
+/*
+    successfully prints out random characters with:
+
+        int i;
+        for(i = 0; i <= 20; i++) {
+            printf("%c\n",random_letter());
+        }
+*/
 char random_letter() {
     return (char)((rand() % 26)+65);
+}
+
+char *random_string(char *str) {
+    int i, length = 1 + sizeof *str;
+    for(i = 0; i < length; ++i) {
+        str[i] = random_letter();
+    }
+    str[i] = '\0';
+    return str;
 }
