@@ -4,6 +4,8 @@
     Start all the process threads and init the mutex
 */
 void start_threads() {
+    _cp.keep_running = TRUE;
+    
     pthread_mutex_init(&mutex, NULL);
     
     pthread_create(&t_arrival_queue, NULL, arrival_queue, NULL);
