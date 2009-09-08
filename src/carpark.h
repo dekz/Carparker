@@ -14,3 +14,13 @@ void join_threads();
 int thread_sleep_default();
 void stop_running();
 bool should_keep_running();
+
+// Threads
+pthread_mutex_t mutex;
+pthread_t t_arrival_queue;
+pthread_t t_enter_carpark;
+pthread_t t_departure;
+pthread_t t_monitor;
+
+// Our carpark store
+CarPark _cp;

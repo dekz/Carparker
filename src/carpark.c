@@ -1,14 +1,5 @@
 #include "carpark.h"
 
-// Threads
-pthread_mutex_t mutex;
-pthread_t t_arrival_queue;
-pthread_t t_enter_carpark;
-pthread_t t_departure;
-pthread_t t_monitor;
-
-CarPark _cp;
-
 int main() {
     printf("Welcome to %s!\n", CAR_PARK);
 
