@@ -6,13 +6,12 @@ BIN = File.join(BIN_PATH, 'carparker')
 SRC = File.join(SRC_PATH, '*.c')
 
 desc "Compile"
-task :compile do
+task :compile => [:clean] do
   puts "\nCompiling Carparker"
 
   Dir.chdir(PROJECT_ROOT) do
     %x(rm -f #{BIN})
     %x(gcc -Wall -pthread -o #{BIN} #{SRC})
-    %x(chmod +x #{BIN})
   end
 end
 
@@ -20,6 +19,11 @@ desc "Run"
 task :run do
   puts "\nRunning carparker"
   exec(BIN)
+end
+
+desc "Clean"
+task :clean do
+  %x(rm -f #{BIN})
 end
 
 desc "Compile and run"
