@@ -36,7 +36,7 @@ void enable_terminal_flush() {
         0 if there is no keyboard input or error
 */
 int kbhit() {
-    fd_set input;// = malloc(sizeof(fd_set));
+    fd_set input;
 
     FD_ZERO (&input);
     FD_SET (0, &input);
