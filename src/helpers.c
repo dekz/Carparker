@@ -9,7 +9,7 @@ bool is_carpark_empty() {
 }
 
 void exit_with_error(char *message) {
-    fprintf(stderr, "%s", message);
+    fprintf(stderr, "%s\n", message);
     exit(1);
 }
 
