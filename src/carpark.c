@@ -23,7 +23,7 @@ void *monitor(void *arg) {
     enable_terminal_flush();
     char c;
     
-    while(_cp.keep_running) {
+    while(should_keep_running()) {
         thread_sleep(25);
         
         if(kbhit()) {
@@ -31,7 +31,7 @@ void *monitor(void *arg) {
             
             if(c=='Q'||c=='q') {
                 printf("Quitting...\n");
-                _cp.keep_running = FALSE;
+                stop_running();
             } else if(c=='C'||c=='c') {
                 printf("Printing summary...\n");
             } else {
@@ -46,7 +46,7 @@ void *monitor(void *arg) {
 
 void *enter_carpark(void *arg) {
     puts("I am enter_carpark");
-    while(_cp.keep_running) {
+    while(should_keep_running()) {
         if(is_carpark_full()) {
             printf("No parking bays available. Arrival blocked\n");
         } else {
@@ -60,7 +60,7 @@ void *enter_carpark(void *arg) {
 void *departure(void *arg) {
     puts("I am departure");
     
-    while(_cp.keep_running) {
+    while(should_keep_running()) {
         if(is_carpark_empty()) {
             printf("Car park empty.  Departure blocked");
         } else {
@@ -76,7 +76,7 @@ void *arrival_queue(void *arg) {
     
     int i = 1;
 
-    while(_cp.keep_running && i++) {
+    while(should_keep_running() && i++) {
         printf("%d\n", i);
         thread_sleep_default();
     }
@@ -85,11 +85,11 @@ void *arrival_queue(void *arg) {
 }
 
 
-int is_carpark_full() {
+bool is_carpark_full() {
     return FALSE;
 }
 
-int is_carpark_empty() {
+bool is_carpark_empty() {
     return FALSE;
 }
 
@@ -98,6 +98,15 @@ void exit_with_error(char *message) {
     exit(1);
 }
 
+bool should_keep_running() {
+    return _cp.keep_running;
+}
+
+void stop_running() {
+    pthread_mutex_lock(&mutex);
+    _cp.keep_running = FALSE;
+    pthread_mutex_unlock(&mutex);
+}
 
 
 /////////////////////// Thread Control /////////////////////////

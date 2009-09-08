@@ -5,9 +5,12 @@
 // Defines
 #define FALSE 0
 #define TRUE !FALSE
+#define bool int
 
-int is_carpark_full();
-int is_carpark_empty();
+bool is_carpark_full();
+bool is_carpark_empty();
 void start_threads();
 void join_threads();
 int thread_sleep_default();
+void stop_running();
+bool should_keep_running();
