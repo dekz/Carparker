@@ -35,3 +35,7 @@ void stop_running() {
     _cp.keep_running = FALSE;
     pthread_mutex_unlock(&mutex);
 }
+
+char random_letter() {
+    return (char)((rand() % 26)+65);
+}

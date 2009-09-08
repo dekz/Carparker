@@ -1,6 +1,8 @@
 #include <unistd.h>
 #include "fromuni.h"
+#include "fromuni_changes.h"
 #include "keyboard.h"
+#include "car.h"
 
 // Defines
 #define FALSE 0
@@ -16,6 +18,7 @@ void stop_running();
 bool should_keep_running();
 void quit();
 void force_quit();
+char random_letter();
 
 // Threads
 pthread_mutex_t mutex;

@@ -47,7 +47,7 @@ void *departure(void *arg);
 void add_car(char *car);
 void remove_car();
 void show_cars();
-char *new_car();
+// char *new_car();
 int  thread_sleep(int time_out_ms);
 char *time_stamp();
 char get_key();
