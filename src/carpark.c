@@ -7,8 +7,12 @@ pthread_t t_enter_carpark;
 pthread_t t_departure;
 pthread_t t_monitor;
 
+CarPark _cp;
+
 int main() {
     printf("Welcome to %s!\n", CAR_PARK);
+
+    _cp.keep_running = TRUE;
     start_threads();
     join_threads();
     exit(0);
@@ -17,71 +21,63 @@ int main() {
 void *monitor(void *arg) {
     char c;
     
-    while(TRUE) {
+    while(_cp.keep_running) {
+        thread_sleep(25);
+        
         if(kbhit()) {
             c = getch();
             
             if(c=='Q'||c=='q') {
                 printf("Quitting...\n");
-
-                pthread_cancel(t_enter_carpark);
-                pthread_cancel(t_departure);
-                pthread_cancel(t_arrival_queue);
-
-                break;
+                _cp.keep_running = FALSE;
             } else if(c=='C'||c=='c') {
                 printf("Printing summary...\n");
             } else {
                 printf("Invalid key. Use either Q or C\n");
             }
         }
-        
-        thread_sleep(25);
     }
     
     return NULL;
 }
 
 void *enter_carpark(void *arg) {
-    
     puts("I am enter_carpark");
-    // while(TRUE) {
-    //     if(is_carpark_full()) {
-    //         printf("No parking bays available. Arrival blocked\n");
-    //     } else {
-    //     }
-    //     
-    //     thread_sleep(500);
-    // }
+    while(_cp.keep_running) {
+        if(is_carpark_full()) {
+            printf("No parking bays available. Arrival blocked\n");
+        } else {
+        }
+        
+        thread_sleep(500);
+    }
     return NULL;
 }
 
 void *departure(void *arg) {
-    thread_sleep_default();
-    
     puts("I am departure");
     
-    // while(TRUE) {
-    //     if(is_carpark_empty()) {
-    //         printf("Car park empty.  Departure blocked");
-    //     } else {
-    //     }
-    //     
-    //     thread_sleep(500);
-    // }
+    while(_cp.keep_running) {
+        if(is_carpark_empty()) {
+            printf("Car park empty.  Departure blocked");
+        } else {
+        }
+        
+        thread_sleep(500);
+    }
     return NULL;
 }
 
 void *arrival_queue(void *arg) {
     puts("I am arrival_queue");
+    
     int i = 1;
 
-    while(i++) {
+    while(_cp.keep_running && i++) {
         printf("%d\n", i);
         thread_sleep_default();
     }
     
-    // puts("I am no longer arrival_queue");
     return NULL;
 }
 
