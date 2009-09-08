@@ -19,7 +19,12 @@ bool should_keep_running() {
 
 void quit() {
     puts("Quitting...");
+    signal(SIGINT, force_quit);
     stop_running();
+}
+
+void force_quit() {
+    exit_with_error("Hard shutdown...");
 }
 
 void stop_running() {
