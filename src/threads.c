@@ -35,7 +35,6 @@ void *enter_carpark(void *arg) {
         } else {
 		//grab the first car in the queue
 			add_car();
-			remove_car();
 		//add it to the car park where a space is available
 		//print out a message, depending on entrance
         }
