@@ -10,6 +10,7 @@
 #define bool int
 
 bool is_carpark_full();
+void clean_carpark();
 bool is_carpark_empty();
 void start_threads();
 void join_threads();

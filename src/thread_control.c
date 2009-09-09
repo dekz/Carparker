@@ -5,6 +5,10 @@
 */
 void start_threads() {
     _cp.keep_running = TRUE;
+	_cq.keep_running = TRUE;
+	_cp.size = 0;
+	_cq.size = 0;
+	_cq.index = 0;
     
     pthread_mutex_init(&mutex, NULL);
     

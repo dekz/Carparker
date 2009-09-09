@@ -1,22 +1,65 @@
 #include "carpark.h"
 
-void showCars()
+void show_cars()
 {
 	int j;
 	printf("[#] Displaying Cars \n");
-	for (j=1; j <= CAR_PARK_SIZE; j++)
+	 for (j=0; j <= CAR_PARK_SIZE; j++)
+	 	{
+	 		printf("| %s |", get_car_id(_cp.buffer[j]));
+	 	}
+	 	printf("\n");
+	printf("%d", _cp.size);
+}
+
+void add_car(char *car)
+{
+	if (is_carpark_full())
 	{
-		printf("| %s |", get_car_id(_cp.buffer[j]));
+		printf("Carpark is full \n");
+	} else if (is_carpark_empty())
+	{
+		_cp.buffer[0] = _cq.buffer[_cq.index];
+		_cp.size++;
+	} else
+	{
+		clean_carpark();
+		_cp.buffer[_cp.size+1] = _cq.buffer[_cq.index];
+		_cp.size++;
+		printf("[C] Car Parked -> %s\n", get_car_id(_cp.buffer[_cp.size]));
 	}
-	printf("\n");
+}
+
+void clean_carpark()
+{
+	int i = 0;
+	int j = 0;
+	
+	if ((!is_carpark_empty()) && (!is_carpark_full()))
+	{
+		for (i=0; i <= _cp.size; i++)
+		{
+			if (_cp.buffer[i] == 0)
+			{
+				for (j=i; j <= _cp.size-1; j++)
+				{
+					//i is blank, move j to i and more the rest down
+					_cp.buffer[j] == _cp.buffer[j+1];
+					printf("[C_P] Swapping %s", get_car_id(_cp.buffer[j]));
+					printf(" and %s \n", get_car_id(_cp.buffer[j+1]));
+				}
+				
+			}
+		}
+	}
 }
 
 bool is_carpark_full() {
-    return FALSE;
+    return (_cp.size >= CAR_PARK_SIZE);
 }
 
 bool is_carpark_empty() {
-    return FALSE;
+    return (_cp.size == 0);
 }
 
 void exit_with_error(char *message) {

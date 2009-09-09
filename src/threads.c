@@ -15,7 +15,7 @@ void *monitor(void *arg) {
                 quit();
             } else if(c=='C'||c=='c') {
                 printf("Printing summary...\n");
-				showCars();
+				show_cars();
             } else {
                 printf("Invalid key. Use either Q or C\n");
             }
@@ -34,6 +34,11 @@ void *enter_carpark(void *arg) {
             printf("No parking bays available. Arrival blocked\n");
         } else {
 		//grab the first car in the queue
+			pthread_mutex_lock(&mutex);
+			
+			
+			
+			pthread_mutex_unlock(&mutex);
 		//add it to the car park where a space is available
 		//print out a message, depending on entrance
         }
@@ -49,7 +54,7 @@ void *departure(void *arg) {
     
     while(should_keep_running()) {
         if(is_carpark_empty()) {
-            printf("Car park empty.  Departure blocked");
+            printf("Car park empty.  Departure blocked\n");
         } else {
 	//randomly remove a car from the car park
         }
@@ -81,8 +86,6 @@ void *arrival_queue(void *arg) {
 				_cq.index += 1 % MAX_QUEUE_SIZE;
 				pthread_mutex_unlock(&mutex);
 				
-					//work out probability of arrival
-					//create a car and add it to the structure
 			}
 		
 	
