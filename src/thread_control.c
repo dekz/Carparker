@@ -37,9 +37,10 @@ void join_threads() {
 */
 int thread_sleep(int ms) {
     struct timespec t;
-    t.tv_sec = 0;
-    t.tv_nsec = ms * 1000000;
-    return nanosleep(&t, NULL);
+    t.tv_sec = ms / 1000;
+    t.tv_nsec = (ms % 1000) * 1000000;
+    int ret = nanosleep(&t, NULL);
+    return ret;
 }
 
 /*
