@@ -5,12 +5,12 @@ void show_cars()
 	printf("Total: %d \n", _cp.size);
 	if (_cp.size > 0)
 	{
-	int j;
-	for (j=0; j < _cp.size; j++)
-	{
-		printf("| %s |\n", get_car_id(_cp.buffer[j]));
-	}
-	printf("\n");
+    	int j;
+    	for (j=0; j < _cp.size; j++)
+    	{
+    		printf("| %s |\n", get_car_id(_cp.buffer[j]));
+    	}
+    	printf("\n");
 	}
 }
 
@@ -18,33 +18,31 @@ void add_car()
 {
 	
 	if (_cq.size > 0)
-	{
-	if (is_carpark_full())
-	{
-		printf("Carpark is full \n");
-	} else if (_cp.size == 0)
-	{
+    {
+    	if (is_carpark_full())
+    	{
+    		printf("Carpark is full \n");
+    	} else if (_cp.size == 0)
+    	{
 		
-		pthread_mutex_lock(&mutex);
-		_cp.buffer[0] = _cq.buffer[_cq.index];
-		printf("[C] Car Parked -> %s\n", get_car_id(_cp.buffer[_cp.size]));
-		_cp.size = 1;
-		pthread_mutex_unlock(&mutex);
+    		pthread_mutex_lock(&mutex);
+    		_cp.buffer[0] = _cq.buffer[_cq.index];
+    		printf("[C] Car Parked -> %s\n", get_car_id(_cp.buffer[_cp.size]));
+    		_cp.size = 1;
+    		pthread_mutex_unlock(&mutex);
 		
-		remove_car();
+    		remove_car();
 		
-	} else
-	{
-		//clean_carpark();
-		pthread_mutex_lock(&mutex);
-		_cp.buffer[_cp.size] = _cq.buffer[_cq.index];
-		printf("[C] Car Parked -> %s\n", get_car_id(_cp.buffer[_cp.size]));
-		_cp.size++;
-		pthread_mutex_unlock(&mutex);
-		remove_car();
-
-
-	}
+    	} else
+    	{
+    		//clean_carpark();
+    		pthread_mutex_lock(&mutex);
+    		_cp.buffer[_cp.size] = _cq.buffer[_cq.index];
+    		printf("[C] Car Parked -> %s\n", get_car_id(_cp.buffer[_cp.size]));
+    		_cp.size++;
+    		pthread_mutex_unlock(&mutex);
+    		remove_car();
+        }
 	} else
 	{
 		printf("No cars in queue\n");
