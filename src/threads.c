@@ -80,7 +80,6 @@ void *arrival_queue(void *arg) {
 				pthread_mutex_lock(&mutex);
 				_cq.buffer[_cq.index] = &c;
 				_cq.size++;
-				_cq.index += 1 % MAX_QUEUE_SIZE;
 				pthread_mutex_unlock(&mutex);
 				
 			}
