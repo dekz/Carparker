@@ -55,7 +55,7 @@ void *departure(void *arg) {
 	//randomly remove a car from the car park
         }
         
-        thread_sleep(500);
+        thread_sleep(5000);
     }
     return NULL;
 }
@@ -77,15 +77,17 @@ void *arrival_queue(void *arg) {
 				printf("[A] Car Arrived with ID: %s\n", get_car_id(&c));
 				
 				pthread_mutex_lock(&mutex);
-				_cq.buffer[_cq.index] = &c;
 				_cq.size++;
+				_cq.index++;
+				_cq.buffer[_cq.index] = &c;
+				
 				pthread_mutex_unlock(&mutex);
 				
 			}
 		
 	
 		}
-        thread_sleep_default();
+        thread_sleep(5000);
     }
     
     return NULL;
