@@ -22,6 +22,8 @@ void force_quit();
 char random_letter();
 char *random_string(char *str);
 void welcome_text();
+void lock();
+void unlock();
 
 // Threads
 pthread_mutex_t mutex;

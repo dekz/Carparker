@@ -51,3 +51,11 @@ int thread_sleep(int ms) {
 int thread_sleep_default() {
     return thread_sleep(TIME_OUT_SLEEP);
 }
+
+void lock() {
+    pthread_mutex_lock(&mutex);
+}
+
+void unlock() {
+    pthread_mutex_unlock(&mutex);
+}

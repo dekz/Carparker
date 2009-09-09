@@ -16,7 +16,6 @@ void show_cars()
 
 void add_car()
 {
-	
 	if (_cq.size > 0)
     {
     	if (is_carpark_full())
@@ -25,22 +24,22 @@ void add_car()
     	} else if (_cp.size == 0)
     	{
 		
-    		pthread_mutex_lock(&mutex);
+    		lock();
     		_cp.buffer[0] = _cq.buffer[_cq.index];
     		printf("[C] Car Parked -> %s\n", get_car_id(_cp.buffer[_cp.size]));
     		_cp.size = 1;
-    		pthread_mutex_unlock(&mutex);
+    		unlock();
 		
     		remove_car();
 		
     	} else
     	{
     		//clean_carpark();
-    		pthread_mutex_lock(&mutex);
+    		lock();
     		_cp.buffer[_cp.size] = _cq.buffer[_cq.index];
     		printf("[C] Car Parked -> %s\n", get_car_id(_cp.buffer[_cp.size]));
     		_cp.size++;
-    		pthread_mutex_unlock(&mutex);
+    		unlock();
     		remove_car();
         }
 	} else
@@ -53,10 +52,10 @@ void add_car()
 
 void remove_car()
 {
-	pthread_mutex_lock(&mutex);
+	lock();
 	_cq.index += 1 & MAX_QUEUE_SIZE;
 	_cq.size--;
-	pthread_mutex_unlock(&mutex);
+	unlock();
 }
 
 void clean_carpark()
@@ -116,9 +115,9 @@ void stop_running() {
     // Doubt the mutex locking is
     // needed as nothing else modifies
     // this flag, but we'll be safe
-    pthread_mutex_lock(&mutex);
+    lock();
     _cp.keep_running = FALSE;
-    pthread_mutex_unlock(&mutex);
+    unlock();
 }
 
 /*
