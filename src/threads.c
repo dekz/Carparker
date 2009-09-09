@@ -34,11 +34,8 @@ void *enter_carpark(void *arg) {
             printf("No parking bays available. Arrival blocked\n");
         } else {
 		//grab the first car in the queue
-			pthread_mutex_lock(&mutex);
-			
-			
-			
-			pthread_mutex_unlock(&mutex);
+			add_car();
+			remove_car();
 		//add it to the car park where a space is available
 		//print out a message, depending on entrance
         }

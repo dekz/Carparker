@@ -12,22 +12,36 @@ void show_cars()
 	printf("%d", _cp.size);
 }
 
-void add_car(char *car)
+void add_car()
 {
+	pthread_mutex_lock(&mutex);
 	if (is_carpark_full())
 	{
 		printf("Carpark is full \n");
 	} else if (is_carpark_empty())
 	{
+
 		_cp.buffer[0] = _cq.buffer[_cq.index];
 		_cp.size++;
+		//printf("[C] Car Parked -> %s\n", get_car_id(_cp.buffer[_cp.size]));
 	} else
 	{
-		clean_carpark();
-		_cp.buffer[_cp.size+1] = _cq.buffer[_cq.index];
+		//clean_carpark();
 		_cp.size++;
+		_cp.buffer[_cp.size] = _cq.buffer[_cq.index];
+		printf("No crash 0\n");
 		printf("[C] Car Parked -> %s\n", get_car_id(_cp.buffer[_cp.size]));
+		printf("No crash 1\n");
 	}
+	pthread_mutex_unlock(&mutex);
+}
+
+void remove_car()
+{
+	pthread_mutex_lock(&mutex);
+	_cq.index += 1 & MAX_QUEUE_SIZE;
+	_cq.size--;
+	pthread_mutex_unlock(&mutex);
 }
 
 void clean_carpark()
@@ -39,7 +53,7 @@ void clean_carpark()
 	{
 		for (i=0; i <= _cp.size; i++)
 		{
-			if (_cp.buffer[i] == 0)
+			if (_cp.buffer[i]->id == 0)
 			{
 				for (j=i; j <= _cp.size-1; j++)
 				{

@@ -53,7 +53,7 @@ void *monitor(void *arg);
 void *arrival_queue(void *arg);
 void *enter_carpark(void *arg);
 void *departure(void *arg);
-void add_car(char *car);
+void add_car();
 void remove_car();
 void show_cars();
 // char *new_car();
