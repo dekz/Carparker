@@ -8,7 +8,7 @@ void show_cars()
 	int j;
 	for (j=0; j < _cp.size; j++)
 	{
-		printf("| %s |\n", get_car_id(_cp.buffer[j]));
+		printf("| element %d is  %s with pointer %d |\n", j, get_car_id(_cp.buffer[j]), _cp.buffer[j]);
  	}
 	printf("\n");
 	}
@@ -27,7 +27,7 @@ void add_car()
 		
 		pthread_mutex_lock(&mutex);
 		_cp.buffer[0] = _cq.buffer[_cq.index];
-		printf("[C] Car Parked -> %s\n", get_car_id(_cp.buffer[_cp.size]));
+		//printf("[C] Car Parked -> %s\n", get_car_id(_cp.buffer[_cp.size]));
 		_cp.size = 1;
 		pthread_mutex_unlock(&mutex);
 		
@@ -37,6 +37,7 @@ void add_car()
 	{
 		//clean_carpark();
 		pthread_mutex_lock(&mutex);
+		//printf("adding car with pointer: %d %d\n", &(_cq.buffer[_cq.index]), *(_cq.buffer[_cq.index]));
 		_cp.buffer[_cp.size] = _cq.buffer[_cq.index];
 		printf("[C] Car Parked -> %s\n", get_car_id(_cp.buffer[_cp.size]));
 		_cp.size++;
