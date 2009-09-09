@@ -77,12 +77,11 @@ void *arrival_queue(void *arg) {
 				c = new_car();
 				printf("[A] Car Arrived with ID: %s\n", get_car_id(c));
 				
-				pthread_mutex_lock(&mutex);
+				lock();
 				_cq.size++;
 				_cq.index++;
-				_cq.buffer[_cq.index] = c;
-				
-				pthread_mutex_unlock(&mutex);
+				_cq.buffer[_cq.index] = &c;
+				unlock();
 				
 			}
 		

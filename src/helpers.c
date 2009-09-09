@@ -5,47 +5,43 @@ void show_cars()
 	printf("Total: %d \n", _cp.size);
 	if (_cp.size > 0)
 	{
-	int j;
-	for (j=0; j < _cp.size; j++)
-	{
-		printf("| element %d is  %s with pointer %d |\n", j, get_car_id(_cp.buffer[j]), _cp.buffer[j]);
- 	}
-	printf("\n");
+    	int j;
+    	for (j=0; j < _cp.size; j++)
+    	{
+    		printf("| %s |\n", get_car_id(_cp.buffer[j]));
+    	}
+    	printf("\n");
 	}
 }
 
 void add_car()
 {
-	
 	if (_cq.size > 0)
-	{
-	if (is_carpark_full())
-	{
-		printf("Carpark is full \n");
-	} else if (_cp.size == 0)
-	{
+    {
+    	if (is_carpark_full())
+    	{
+    		printf("Carpark is full \n");
+    	} else if (_cp.size == 0)
+    	{
 		
-		pthread_mutex_lock(&mutex);
-		_cp.buffer[0] = _cq.buffer[_cq.index];
-		//printf("[C] Car Parked -> %s\n", get_car_id(_cp.buffer[_cp.size]));
-		_cp.size = 1;
-		pthread_mutex_unlock(&mutex);
+    		lock();
+    		_cp.buffer[0] = _cq.buffer[_cq.index];
+    		printf("[C] Car Parked -> %s\n", get_car_id(_cp.buffer[_cp.size]));
+    		_cp.size = 1;
+    		unlock();
 		
-		remove_car();
+    		remove_car();
 		
-	} else
-	{
-		//clean_carpark();
-		pthread_mutex_lock(&mutex);
-		//printf("adding car with pointer: %d %d\n", &(_cq.buffer[_cq.index]), *(_cq.buffer[_cq.index]));
-		_cp.buffer[_cp.size] = _cq.buffer[_cq.index];
-		printf("[C] Car Parked -> %s\n", get_car_id(_cp.buffer[_cp.size]));
-		_cp.size++;
-		pthread_mutex_unlock(&mutex);
-		remove_car();
-
-
-	}
+    	} else
+    	{
+    		//clean_carpark();
+    		lock();
+    		_cp.buffer[_cp.size] = _cq.buffer[_cq.index];
+    		printf("[C] Car Parked -> %s\n", get_car_id(_cp.buffer[_cp.size]));
+    		_cp.size++;
+    		unlock();
+    		remove_car();
+        }
 	} else
 	{
 		printf("No cars in queue\n");
@@ -56,10 +52,10 @@ void add_car()
 
 void remove_car()
 {
-	pthread_mutex_lock(&mutex);
+	lock();
 	_cq.index += 1 & MAX_QUEUE_SIZE;
 	_cq.size--;
-	pthread_mutex_unlock(&mutex);
+	unlock();
 }
 
 void clean_carpark()
@@ -119,9 +115,9 @@ void stop_running() {
     // Doubt the mutex locking is
     // needed as nothing else modifies
     // this flag, but we'll be safe
-    pthread_mutex_lock(&mutex);
+    lock();
     _cp.keep_running = FALSE;
-    pthread_mutex_unlock(&mutex);
+    unlock();
 }
 
 /*
@@ -143,4 +139,12 @@ char *random_string(char *str) {
     }
     str[i] = '\0';
     return str;
+}
+
+void welcome_text() {
+    printf("Welcome to the simulation of a Car Park Management System for %s.\n\n", CAR_PARK);
+    puts("Press 'C/c' (followed by return) to show car park status.");
+    puts("Press 'Q/q' (followed by return) to quit program.");
+    puts("\n<--- Press return to continue --->\n");
+    getchar();
 }
