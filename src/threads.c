@@ -53,6 +53,7 @@ void *departure(void *arg) {
             printf("Car park empty.  Departure blocked\n");
         } else {
 	//randomly remove a car from the car park
+	//DEALLOC
         }
         
         thread_sleep(500);
@@ -72,14 +73,14 @@ void *arrival_queue(void *arg) {
 			int _rand = RAND(0,100);
 			if (_rand <= ARRIVAL_PERCENT_ACTION)
 			{
-				Car c;
+				Car *c;
 				c = new_car();
-				printf("[A] Car Arrived with ID: %s\n", get_car_id(&c));
+				printf("[A] Car Arrived with ID: %s\n", get_car_id(c));
 				
 				pthread_mutex_lock(&mutex);
 				_cq.size++;
 				_cq.index++;
-				_cq.buffer[_cq.index] = &c;
+				_cq.buffer[_cq.index] = c;
 				
 				pthread_mutex_unlock(&mutex);
 				

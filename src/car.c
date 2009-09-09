@@ -1,12 +1,13 @@
 #include "car.h"
 #include "carpark.h"
 
-Car new_car() {
-    Car c;
+Car *new_car() {
+    Car *c = malloc(sizeof(Car));
+
     
-    c.id  = RAND(CARID_NUMBER_MIN,CARID_NUMBER_MAX);
-    random_string(c.str);
-    
+    c->id  = RAND(CARID_NUMBER_MIN,CARID_NUMBER_MAX);
+    random_string(c->str);
+	printf("new car pointer %d\n", c);
     return c;
 }
 
@@ -16,7 +17,7 @@ char *get_car_id(Car *car) {
     return str;
 }
 
-void puts_example_car_id() {
+/*void puts_example_car_id() {
     puts("Example car ID generation:");
     
     int i;
@@ -27,4 +28,4 @@ void puts_example_car_id() {
         c = new_car();
         printf("%s\n", get_car_id(&c));
     }
-}
+}*/
