@@ -1,5 +1,16 @@
 #include "carpark.h"
 
+void showCars()
+{
+	int j;
+	printf("[#] Displaying Cars \n");
+	for (j=1; j <= CAR_PARK_SIZE; j++)
+	{
+		printf("| %s |", _cp.buffer[j]);
+	}
+	printf("\n");
+}
+
 bool is_carpark_full() {
     return FALSE;
 }

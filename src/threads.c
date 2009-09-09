@@ -14,6 +14,7 @@ void *monitor(void *arg) {
                 quit();
             } else if(c=='C'||c=='c') {
                 printf("Printing summary...\n");
+				showCars();
             } else {
                 printf("Invalid key. Use either Q or C\n");
             }
@@ -25,6 +26,7 @@ void *monitor(void *arg) {
 }
 
 void *enter_carpark(void *arg) {
+
     puts("I am enter_carpark");
     while(should_keep_running()) {
         if(is_carpark_full()) {
@@ -41,6 +43,7 @@ void *enter_carpark(void *arg) {
 }
 
 void *departure(void *arg) {
+
     puts("I am departure");
     
     while(should_keep_running()) {
@@ -56,6 +59,7 @@ void *departure(void *arg) {
 }
 
 void *arrival_queue(void *arg) {
+	
     puts("I am arrival_queue");
     
     int i = 1;

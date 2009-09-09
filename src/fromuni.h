@@ -26,6 +26,7 @@
 #define CAR_SIZE 12
 #define CARID_NUMBER_MIN 10000000
 #define CARID_NUMBER_MAX 99999999
+#define MAX_QUEUE_SIZE 10
 
 
 /* An example of the data structure of the Car Park. You may define your own car park */
@@ -37,6 +38,18 @@ typedef struct {
     int  size;			         // current size of carpark
 } CarPark;
 
+typedef struct {
+	char *buffer[MAX_QUEUE_SIZE];
+	char *arrival_time[MAX_QUEUE_SIZE];
+	int keep_running;
+	int size;
+	int index;
+	} CarQueue;
+
+typedef struct {
+	CarQueue queue;
+	CarPark cp;
+	} CarComplex;
 
 /* Examples of function prototypes, you may define your own functions */
 
