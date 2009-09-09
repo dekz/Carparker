@@ -55,7 +55,7 @@ void *departure(void *arg) {
 	//randomly remove a car from the car park
         }
         
-        thread_sleep(5000);
+        thread_sleep(500);
     }
     return NULL;
 }
@@ -87,7 +87,7 @@ void *arrival_queue(void *arg) {
 		
 	
 		}
-        thread_sleep(5000);
+        thread_sleep(500);
     }
     
     return NULL;
