@@ -30,6 +30,9 @@ void *enter_carpark(void *arg) {
         if(is_carpark_full()) {
             printf("No parking bays available. Arrival blocked\n");
         } else {
+		//grab the first car in the queue
+		//add it to the car park where a space is available
+		//print out a message, depending on entrance
         }
         
         thread_sleep(500);
@@ -44,6 +47,7 @@ void *departure(void *arg) {
         if(is_carpark_empty()) {
             printf("Car park empty.  Departure blocked");
         } else {
+	//randomly remove a car from the car park
         }
         
         thread_sleep(500);
@@ -58,6 +62,8 @@ void *arrival_queue(void *arg) {
 
     while(should_keep_running() && i++) {
         printf("%d\n", i);
+		//work out probability of arrival
+		//create a car and add it to the structure
         thread_sleep_default();
     }
     
