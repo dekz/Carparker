@@ -80,7 +80,7 @@ void *arrival_queue(void *arg) {
 				lock();
 				_cq.size++;
 				_cq.index++;
-				_cq.buffer[_cq.index] = &c;
+				_cq.buffer[_cq.index] = c;
 				unlock();
 				
 			}
