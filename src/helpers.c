@@ -9,7 +9,7 @@ void show_cars()
 	for (j=0; j < _cp.size; j++)
 	{
 		printf("| %s |\n", get_car_id(_cp.buffer[j]));
- 	}
+	}
 	printf("\n");
 	}
 }
@@ -142,4 +142,12 @@ char *random_string(char *str) {
     }
     str[i] = '\0';
     return str;
+}
+
+void welcome_text() {
+    printf("Welcome to the simulation of a Car Park Management System for %s.\n\n", CAR_PARK);
+    puts("Press 'C/c' (followed by return) to show car park status.");
+    puts("Press 'Q/q' (followed by return) to quit program.");
+    puts("\n<--- Press return to continue --->\n");
+    getchar();
 }
