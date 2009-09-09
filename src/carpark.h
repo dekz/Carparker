@@ -20,6 +20,7 @@ void quit();
 void force_quit();
 char random_letter();
 char *random_string(char *str);
+void showCars();
 
 // Threads
 pthread_mutex_t mutex;

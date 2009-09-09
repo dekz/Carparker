@@ -6,7 +6,7 @@ void showCars()
 	printf("[#] Displaying Cars \n");
 	for (j=1; j <= CAR_PARK_SIZE; j++)
 	{
-		printf("| %s |", _cp.buffer[j]);
+		printf("| %s |", get_car_id(_cp.buffer[j]));
 	}
 	printf("\n");
 }

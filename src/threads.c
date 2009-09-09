@@ -1,3 +1,4 @@
+
 #include "carpark.h"
 
 void *monitor(void *arg) {
@@ -61,13 +62,31 @@ void *departure(void *arg) {
 void *arrival_queue(void *arg) {
 	
     puts("I am arrival_queue");
-    
-    int i = 1;
 
-    while(should_keep_running() && i++) {
-        printf("%d\n", i);
-		//work out probability of arrival
-		//create a car and add it to the structure
+    while(should_keep_running()) {
+		if (_cq.size  < MAX_QUEUE_SIZE)
+		{
+
+			//work out the probability of arrival
+			int _rand = RAND(0,100);
+			if (_rand <= ARRIVAL_PERCENT_ACTION)
+			{
+				Car c;
+				c = new_car();
+				printf("[A] Car Arrived with ID: %s\n", get_car_id(&c));
+				
+				pthread_mutex_lock(&mutex);
+				_cq.buffer[_cq.index] = &c;
+				_cq.size++;
+				_cq.index += 1 % MAX_QUEUE_SIZE;
+				pthread_mutex_unlock(&mutex);
+				
+					//work out probability of arrival
+					//create a car and add it to the structure
+			}
+		
+	
+		}
         thread_sleep_default();
     }
     

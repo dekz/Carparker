@@ -8,7 +8,7 @@
 #include <string.h>
 #include <errno.h>
 #include <ctype.h>
-
+#include "car.h"
 
 /* name of the carpark */
 #define CAR_PARK "Phoenix Car Park"
@@ -32,24 +32,20 @@
 /* An example of the data structure of the Car Park. You may define your own car park */
 
 typedef struct {
-    char *buffer[CAR_PARK_SIZE];       // stores carpark cars
+    Car *buffer[CAR_PARK_SIZE];       // stores carpark cars
     char *arrival_time[CAR_PARK_SIZE]; // stores arrival time of cars
     int  keep_running;		         // set false to exit threads
     int  size;			         // current size of carpark
 } CarPark;
 
 typedef struct {
-	char *buffer[MAX_QUEUE_SIZE];
+	Car *buffer[MAX_QUEUE_SIZE];
 	char *arrival_time[MAX_QUEUE_SIZE];
 	int keep_running;
 	int size;
 	int index;
 	} CarQueue;
 
-typedef struct {
-	CarQueue queue;
-	CarPark cp;
-	} CarComplex;
 
 /* Examples of function prototypes, you may define your own functions */
 

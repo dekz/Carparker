@@ -10,7 +10,10 @@ int main() {
     puts("\n<--- Press return to continue --->\n");
     getchar();
 
-    puts_example_car_id();
+    //puts_example_car_id();
+	_cp.size = 0;
+	_cq.size = 0;
+	_cq.index = 0;
         
     start_threads();
     join_threads();

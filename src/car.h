@@ -6,6 +6,7 @@ typedef struct {
     int id;
 } Car;
 
+Car new_car();
 char *get_car_id(Car *car);
 void puts_example_car_id();
 #endif
