@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-Wall -pthread
+CFLAGS=-Wall -pthread -pedantic -std=gnu99
 COMMAND=$(CC) $(CFLAGS)
 
 SRC=src/*.c
