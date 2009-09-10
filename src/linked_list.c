@@ -71,10 +71,8 @@ void delete_node(int n)
         
         //p should be the 2nd last node
         node *d = p->next;
-        printf("Crash point delete_node (1), next pointer is %p\n", (void *)p->next);
         //d is now the last node
         p->next = NULL;
-        printf("attempting to remove node %s\n", get_car_id(d->car));
         printf("[D] Car Departing -> %s\n", get_car_id(d->car));
         free(d);
         _ll.size--;
