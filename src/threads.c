@@ -37,7 +37,13 @@ void *enter_carpark(void *arg) {
             printf("No parking bays available. Arrival blocked\n");
         } else {
         //grab the first car in the queue
-            add_car();
+		if (_cq.size > 0)
+		{
+			add_car();
+		} else 
+		{
+			printf("No Cars in the queue\n");
+		}
         //add it to the car park where a space is available
         //print out a message, depending on entrance
         }
@@ -59,8 +65,7 @@ void *departure(void *arg) {
             int _rand = RAND(0,100);
             if (_rand <= DEPARTURE_PERCENT_ACTION)
             {
-                remove_carpark();
-                
+				remove_carpark();
             }
     
     //randomly remove a car from the car park
@@ -84,13 +89,13 @@ void *arrival_queue(void *arg) {
             int _rand = RAND(0,100);
             if (_rand <= ARRIVAL_PERCENT_ACTION)
             {
-                Car *c;
+				Car *c;
                 c = new_car();
                 printf("[A] Car Arrived with ID: %s\n", get_car_id(c));
                 
                 lock();
                 _cq.size++;
-                _cq.index++;
+                _cq.index = ((_cq.index+1) % MAX_QUEUE_SIZE);
                 _cq.buffer[_cq.index] = c;
                 unlock();
                 

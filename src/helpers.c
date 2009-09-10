@@ -39,11 +39,21 @@ void add_car()
             printf("car park is full\n");
         } else 
         {
-            //get the car from the queue and add it to the linked list
-            Car *_c = _cq.buffer[_cq.index];
+           if (_cq.size > 0)
+			{
+			lock();
+			//get the car from the queue and add it to the linked list
+			printf("ADD_CAR BP 1 Index is: %d\n", _cq.index);
+ 			Car *_c = _cq.buffer[_cq.index];
+			printf("ADD_CAR BP 2\n");
             new_node(_c);
+			printf("ADD_CAR BP 3\n");
             printf("[C] Car Parked -> %s\n", get_car_id(_c));
-            remove_car();
+			unlock();
+			remove_car();
+			printf("ADD_CAR DONE\n");
+
+		}
         }
     } else
     {
@@ -55,8 +65,15 @@ void add_car()
 
 void remove_car()
 {
-    lock();
-    _cq.index += 1 & MAX_QUEUE_SIZE;
+	lock();
+    
+	if (_cq.index > 0)
+	{
+		_cq.index--;
+	} else
+	{
+		printf("Some how the index is negative\n");
+	}
     _cq.size--;
     unlock();
 }
