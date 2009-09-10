@@ -37,7 +37,27 @@ void delete_node(int n)
 	if (_ll.size == 0)
 	{
 		printf("nothing to remove\n");
-	} else
+	} if (n == _ll.size)
+	{
+		printf("[D] Car Departing (LAST CAR)-> %s\n", get_car_id(p->car));	
+		int i = 1;
+		for (i=1; i < _ll.size-1; i++)
+		{
+			p = p->next;
+		}
+		node *d = p->next;
+		p->next = NULL;
+		_ll.size--;
+		free(d);
+	} else if (n == 0)
+	{
+		//remove first
+		node *d = p;
+		_ll.head = p->next;
+		_ll.size--;
+		free(d);
+	}
+	else
 	{
 		int i=1;
 		while(i < n-1)

@@ -6,7 +6,7 @@
 void remove_carpark()
 {
     int _rand = 0;
-    _rand = RAND(0,_ll.size);
+    _rand = RAND(1,_ll.size);
     printf("Trying to remove node %d ll size %d\n", _rand, _ll.size);
     delete_node(_rand);
 
