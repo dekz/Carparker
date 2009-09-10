@@ -1,5 +1,5 @@
-#ifndef CARPARK_H
-#define CARPARK_H
+#ifndef MAIN_H
+#define MAIN_H
 
 // Defines
 #define FALSE 0
@@ -9,12 +9,12 @@
 #include <unistd.h>
 #include "fromuni.h"
 #include "fromuni_changes.h"
-#include "keyboard.h"
 #include "car.h"
-#include "helpers.h"
 
 node *new_node(void *arg);
 node *get_node(int num);
+void quit();
+void force_quit();
 
 // Threads
 pthread_mutex_t mutex;
@@ -30,4 +30,4 @@ LinkedList _ll;
 
 Car _nullcar;
 
-#endif /* end of include guard: CARPARK_H */
+#endif /* end of include guard: MAIN_H */

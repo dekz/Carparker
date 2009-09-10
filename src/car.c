@@ -1,9 +1,7 @@
-#include "car.h"
-#include "carpark.h"
+#include "main.h"
 
 Car *new_car() {
     Car *c = malloc(sizeof(Car));
-
     
     c->id  = RAND(CARID_NUMBER_MIN,CARID_NUMBER_MAX);
     random_string(c->str);
