@@ -8,7 +8,7 @@ void show_cars()
     	int j;
     	for (j=0; j < _cp.size; j++)
     	{
-    		printf("| %s |\n", get_car_id(_cp.buffer[j]));
+    		printf("| %s |", get_car_id(_cp.buffer[j]));
     	}
     	printf("\n");
 	}
@@ -67,15 +67,17 @@ void remove_carpark()
 	if (_cp.size == 1)
 	{
 		_rand = 0;
-	} else if ((_cp.buffer[_rand] != NULL) || _cp.buffer[_rand] != 0)
+	} else if ((_cp.buffer[_rand])->id != 0)
 	{
 		lock();
+
 		printf("[D] Car Depearting -> %s | %d\n",  get_car_id(_cp.buffer[_rand]), _cp.buffer[_rand]);
-		printf("Attempting to free %d, rand is %d\n", _cp.buffer[_rand], _rand);
+		printf("Attempting to free %d, rand is %d, set to null\n", _cp.buffer[_rand], _rand);
 		free(_cp.buffer[_rand]);
+		_cp.buffer[_rand] = &_nullcar;
 		_cp.size--;
 		unlock();
-		clean_carpark();
+		//clean_carpark();
 		
 	} else
 	{
@@ -96,9 +98,9 @@ void clean_carpark()
 		for (i=0; i < _cp.size; i++)
 		{
 			
-			if( (_cp.buffer[i]->id == 0) || (_cp.buffer[i] == NULL))
+			if (_cp.buffer[i]->id == 0)
 			{
-				printf("Found something to dealloc\n");
+				printf("Found a NULL CAR\n");
 				//dealloc the pointer to the structure
 				for (j=i; j < _cp.size; j++)
 				{
