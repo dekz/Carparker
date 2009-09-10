@@ -6,11 +6,9 @@
 
 void remove_carpark()
 {
-	printf("REMOVE CP START\n");
  	int _rand = 0;
     _rand = RAND(1,_ll.size);
     delete_node(_rand);
-	printf("REMOVE CP DONE\n");
 
 }
 
@@ -41,11 +39,16 @@ void add_car()
         } else 
         {
 			//get the car from the queue and add it to the linked list
-			printf("AC START\n");
+			if (_cq.buffer[_cq.index] != NULL)
+			{
 			new_node(_cq.buffer[_cq.index]);
             printf("[C] Car Parked -> %s\n", get_car_id(_cq.buffer[_cq.index]));
 			remove_car();
-			printf("AC END\n");
+			}
+			else {
+				printf("WHY IS THERE A NULL, removing broken car\n");
+				remove_car();
+			}
 
         }
     } else
@@ -59,9 +62,7 @@ void add_car()
 void remove_car()
 {
 	lock();
-	printf("QUEUE INDEX(1) %d\n", _cq.index);
 	_cq.index = ((_cq.index+1) % MAX_QUEUE_SIZE);
-	printf("QUEUE INDEX(2) %d\n", _cq.index);
     _cq.size--;
     unlock();
 }

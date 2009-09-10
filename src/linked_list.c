@@ -7,7 +7,6 @@
 
 node *new_node(void *arg)
 {
-   	printf("NEWNDOE START\n");
  	lock();
     node *n = malloc(sizeof(node));
     Car *c = arg;
@@ -33,16 +32,13 @@ node *new_node(void *arg)
         temp->next = n;
         _ll.size++; 
     }
-	printf("NEWNODE END POINTER OF CAR %d \n", c);
     unlock();
-	printf("NEWNODE END\n");
     return n;
 }
 
 
 void delete_node(int n)
 {
-    printf("DELNODE START\n");
 	lock();
     node *p = _ll.head;
     if (_ll.size == 0)
@@ -85,6 +81,5 @@ void delete_node(int n)
         _ll.size--;
     }
     unlock();
-	printf("DELNODE END\n");
     
 }
