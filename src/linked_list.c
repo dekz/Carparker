@@ -60,12 +60,11 @@ void delete_node(int n)
 	else
 	{
 		int i=1;
-		while(i < n-1)
+		for (i=1; i < _ll.size-1; i++)
 		{
-			//attempt to get the 2nd last node
 			p = p->next;
-			i++;
 		}
+		
 		//p should be the 2nd last node
 		node *d = p->next;
 		printf("Crash point delete_node (1), next pointer is %d\n", p->next);
