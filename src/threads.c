@@ -50,7 +50,7 @@ void *enter_carpark(void *arg) {
         //print out a message, depending on entrance
         }
         
-        thread_sleep(500);
+        thread_sleep(1000);
     }
     return NULL;
 }
@@ -74,7 +74,7 @@ void *departure(void *arg) {
     //DEALLOC
         }
         
-        thread_sleep(500);
+        thread_sleep(1000);
     }
     return NULL;
 }
@@ -109,7 +109,7 @@ void *arrival_queue(void *arg) {
         
     
         }
-        thread_sleep(500);
+        thread_sleep(1000);
     }
     
     return NULL;

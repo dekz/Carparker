@@ -18,12 +18,13 @@ void show_cars()
     if (_ll.size > 0)
     {
         node *n = _ll.head;
-
+		printf("| %s |", get_car_id(n->car));
         while(n->next != NULL)
         {
+			n = n->next;
             printf("| %s |", get_car_id(n->car));
-            n = n->next;
         }
+
         
         printf("\n");
     }
