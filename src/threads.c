@@ -97,7 +97,7 @@ void *arrival_queue(void *arg) {
                 
                 lock();
                 _cq.size++;
-                _cq.index = ((_cq.index+1) % MAX_QUEUE_SIZE);
+                //_cq.index = ((_cq.index+1) % MAX_QUEUE_SIZE);
                 _cq.buffer[_cq.index] = c;
                 unlock();
                 

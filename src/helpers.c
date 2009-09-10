@@ -61,14 +61,7 @@ void add_car()
 void remove_car()
 {
 	lock();
-    
-	if (_cq.index > 0)
-	{
-		_cq.index--;
-	} else
-	{
-		printf("Some how the index is negative\n");
-	}
+	_cq.index = ((_cq.index+1) % MAX_QUEUE_SIZE);
     _cq.size--;
     unlock();
 }
