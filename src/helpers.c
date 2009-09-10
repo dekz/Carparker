@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "helpers.h"
 #include "globals.h"
+#include "linked_list.h"
 
 void remove_carpark()
 {
