@@ -5,11 +5,14 @@
 #include "car.h"
 
 Car *new_car() {
-    Car *c = malloc(sizeof(Car));
+    Car *c = malloc(sizeof(c)+1);
     
     c->id  = RAND(CARID_NUMBER_MIN,CARID_NUMBER_MAX);
     random_string(c->str);
-
+	if (c == NULL)
+	{
+		printf("I AM RETURNING A NULL POINTER\n");
+	}
     return c;
 }
 

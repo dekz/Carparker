@@ -41,7 +41,9 @@ void *enter_carpark(void *arg) {
         //grab the first car in the queue
 		if (_cq.size > 0)
 		{
+			printf("CP THREAD START\n");
 			add_car();
+			printf("CP THREAD END\n");
 		} else 
 		{
 			printf("No Cars in the queue\n");
@@ -93,13 +95,17 @@ void *arrival_queue(void *arg) {
             {
 				Car *c;
                 c = new_car();
-                printf("[A] Car Arrived with ID: %s\n", get_car_id(c));
+                if (c != NULL)
+				{
+				printf("[A] Car Arrived with ID: %s Queue index %d\n", get_car_id(c), _cq.index);
                 
                 lock();
                 _cq.size++;
-                //_cq.index = ((_cq.index+1) % MAX_QUEUE_SIZE);
+				printf("ARRIVAL QUEUE INDEX(1) %d\n", _cq.index);
                 _cq.buffer[_cq.index] = c;
+				printf("ARRIVAL QUEUE INDEX(2) %d\n", _cq.index);
                 unlock();
+				}
                 
             }
         

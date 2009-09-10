@@ -7,9 +7,14 @@
 
 node *new_node(void *arg)
 {
-    lock();
+   	printf("NEWNDOE START\n");
+ 	lock();
     node *n = malloc(sizeof(node));
     Car *c = arg;
+	if (c == NULL)
+		{
+			printf("trying to add a null car what \n");
+		}
     n->car = c;
     n->next = NULL;
     
@@ -28,22 +33,24 @@ node *new_node(void *arg)
         temp->next = n;
         _ll.size++; 
     }
-    
+	printf("NEWNODE END POINTER OF CAR %d \n", c);
     unlock();
+	printf("NEWNODE END\n");
     return n;
 }
 
 
 void delete_node(int n)
 {
-    lock();
+    printf("DELNODE START\n");
+	lock();
     node *p = _ll.head;
     if (_ll.size == 0)
     {
-        printf("nothing to remove\n");
-    } if (n == _ll.size)
+        printf("Error: No Cars to Remove\n");
+    } else if (n == _ll.size)
     {
-        printf("[D] Car Departing (LAST CAR)-> %s\n", get_car_id(p->car));  
+        printf("[D] Car Departing -> %s\n", get_car_id(p->car));  
         int i = 1;
         for (i=1; i < _ll.size-1; i++)
         {
@@ -78,5 +85,6 @@ void delete_node(int n)
         _ll.size--;
     }
     unlock();
+	printf("DELNODE END\n");
     
 }
