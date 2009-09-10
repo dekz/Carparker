@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-Wall -pthread -pedantic -std=gnu99
+CFLAGS=-Wall -pthread -pedantic -std=gnu99 -g
 COMMAND=$(CC) $(CFLAGS)
 
 SRC=src/*.c
@@ -14,4 +14,4 @@ run:
 	$(BIN)
 
 clean:
-	rm -f bin/*
+	rm -rf bin/*

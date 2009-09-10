@@ -11,6 +11,7 @@
 void exit_with_error(char *message);
 bool is_carpark_full();
 void clean_carpark();
+void remove_carpark();
 bool is_carpark_empty();
 void start_threads();
 void join_threads();

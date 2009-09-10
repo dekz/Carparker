@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include "keyboard.h"
 #include "threads.h"
+#include "thread_control.h"
 #include "helpers.h"
 #include "globals.h"
+#include "quit.h"
 
 void *monitor(void *arg) {
     enable_terminal_flush();
