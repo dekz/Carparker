@@ -49,12 +49,10 @@ typedef struct {
 typedef struct {
 	Car *car;
 	struct node *next;
-	struct node *prev;
 	} node;
 
 typedef struct {
 	node *head;
-	node *tail;
 	int size;	
 	} LinkedList;
 
