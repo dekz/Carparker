@@ -6,36 +6,25 @@ node *new_node(void *arg)
 	lock();
 	node *n = malloc(sizeof(node));
 	Car *c = arg;
-
+	n->car = c;
+	n->next = NULL;
+	
 	if (_ll.size == 0)
 	{
 		_ll.head = n;
-		n->car = c;
-		n->next = NULL;
-		
-	} else if (_ll.size == 1)
+		_ll.size = 1;
+	} else
 	{
-		node *head = _ll.head;
-		n->car = c;
-		head->next = n;
-		n->next = NULL;
-	} 
-	else {
-		
-	node *temp = _ll.head;
-	printf("Crash zone C2\n");	
-		while(temp->next != NULL)
+		node *temp = _ll.head;
+		while (temp->next != NULL)
 		{
-			printf("Crash zone C2.1\n");
 			temp = temp->next;
 		}
 		
 		temp->next = n;
-		n->car = c;
-		n->next = NULL;
+		_ll.size++;	
 	}
-		
-	_ll.size++;
+	
 	unlock();
 	return n;
 }
@@ -44,47 +33,29 @@ node *new_node(void *arg)
 void delete_node(int n)
 {
 	lock();
-	printf("Crash zone 1\n");
-	
 	node *p = _ll.head;
-	
 	if (_ll.size == 0)
 	{
-		printf("No nodes to delete\n");
-	} else if (_ll.size < n)
+		printf("nothing to remove\n");
+	} else
 	{
-		printf("No such node exists\n");
-	} else if (_ll.size == 1)
-	{
-		printf("Deleting the last node\n");
-		printf("[D] Car Departing -> %s\n", get_car_id(_ll.head->car));
-		free(_ll.head);
-		_ll.head = NULL;
-	} 
-	else
-	{
-		int i = 0;
-		printf("Crash zone B2, trying to remove %d size of list is %d\n", n, _ll.size);
-		while(i<n-1)
+		int i=1;
+		while(i < n-1)
 		{
-			printf("%d\n", i);
-			if(p->next == NULL)
-				{
-					printf("freak the fuck out\n");
-				}
+			//attempt to get the 2nd last node
 			p = p->next;
 			i++;
-			
 		}
-	} //returns the 2nd last node
-	printf("Crash zone B3. 2nd last node has pointer of %d\n", p->next);
-	node *d = p->next;
-	p->next = NULL;
-	printf("[D] Car Departing -> %s\n", get_car_id(d->car));
-	printf("Crash zone B4\n");
-	
-	_ll.size--;
-	free(d);
+		//p should be the 2nd last node
+		node *d = p->next;
+		printf("Crash point delete_node (1), next pointer is %d\n", p->next);
+		//d is now the last node
+		p->next = NULL;
+		printf("attempting to remove node %s\n", get_car_id(d->car));
+		printf("[D] Car Departing -> %s\n", get_car_id(d->car));
+		free(d);
+		_ll.size--;
+	}
 	unlock();
 	
 }
