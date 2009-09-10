@@ -36,7 +36,7 @@ void delete_node(int n)
 {
 	lock();
 	printf("Crash zone 1\n");
-	node *p;
+	node *p = _ll.head;
 	int i = 0;
 	if (_ll.size == 0)
 	{
@@ -55,14 +55,18 @@ void delete_node(int n)
 		printf("Crash zone B2, going until %d\n", n);
 		while(i<n-1)
 		{
+			if(p->next == NULL)
+				{
+					printf("freak the fuck out\n");
+				}
 			p = p->next;
 			printf("%d\n", i);
 			i++;
 			
 		}
 	} //returns the 2nd last node
-	printf("Crash zone B3\n");
-	node *d = p;
+	printf("Crash zone B3 %d\n", p->next);
+	node *d = p->next;
 	p->next = NULL;
 	
 	printf("Crash zone B4\n");
