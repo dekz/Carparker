@@ -5,6 +5,7 @@
 #include "helpers.h"
 #include "globals.h"
 #include "quit.h"
+#include "time.h"
 
 void *monitor(void *arg) {
     enable_terminal_flush();
@@ -69,9 +70,7 @@ void *departure(void *arg) {
             {
 				remove_carpark();
             }
-    
-    //randomly remove a car from the car park
-    //DEALLOC
+   
         }
         
         thread_sleep(1000);
@@ -93,9 +92,19 @@ void *arrival_queue(void *arg) {
             {
 				Car *c;
                 c = new_car();
+				
+				time_t     now;
+				struct tm  *ts;
+				char buf[80];
+				now = time(NULL);
+				
+				ts = localtime(&now);
+				strftime(buf, sizeof(buf), "%H:%M:%S", ts);
+				
+				
                 if (c != NULL)
 				{
-				printf("[A] Car Arrived with ID: %s Queue index %d\n", get_car_id(c), _cq.index);
+				printf("[A] Car Arrived with ID: %s at time %s\n", get_car_id(c), buf);
                 
                 lock();
                 _cq.size++;

@@ -32,8 +32,8 @@ void start_threads() {
 void join_threads() {
     pthread_join(t_arrival_queue, NULL);
     pthread_join(t_enter_carpark, NULL);
-    pthread_join(t_departure,     NULL);
     pthread_join(t_monitor,       NULL);
+    pthread_join(t_departure,     NULL);
 
     pthread_mutex_destroy(&mutex);
 }

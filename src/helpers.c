@@ -42,8 +42,11 @@ void add_car()
 			//get the car from the queue and add it to the linked list
 			if (_cq.buffer[_cq.index] != NULL)
 			{
+			time_t now;
 			new_node(_cq.buffer[_cq.index]);
-            printf("[C] Car Parked -> %s\n", get_car_id(_cq.buffer[_cq.index]));
+			Car *c = _cq.buffer[_cq.index];
+			c->cartime = time(NULL);
+            printf("[C] Car Parked -> %s at time %s", get_car_id(_cq.buffer[_cq.index]), ctime(&c->cartime));
 			remove_car();
 			}
 			else {

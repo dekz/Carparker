@@ -1,6 +1,6 @@
 #ifndef _CAR_H_
 #define _CAR_H_
-
+#include "time.h"
 /* length of a car id */
 #define CAR_ID_SIZE 10
 #define CARID_NUMBER_MIN 10000000
@@ -9,6 +9,7 @@
 typedef struct {
     char str[3];
     int id;
+	time_t cartime;
 } Car;
 
 Car *new_car();

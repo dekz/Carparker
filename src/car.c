@@ -6,9 +6,9 @@
 
 Car *new_car() {
     Car *c = malloc(sizeof(c)+1);
-    
     c->id  = RAND(CARID_NUMBER_MIN,CARID_NUMBER_MAX);
     random_string(c->str);
+	c->cartime = time(NULL);
 	if (c == NULL)
 	{
 		printf("I AM RETURNING A NULL POINTER\n");
