@@ -1,4 +1,3 @@
-
 #include "carpark.h"
 
 void *monitor(void *arg) {

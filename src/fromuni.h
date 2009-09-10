@@ -44,17 +44,17 @@ typedef struct {
 	int keep_running;
 	int size;
 	int index;
-	} CarQueue;
+} CarQueue;
 
 typedef struct {
 	Car *car;
 	struct node *next;
-	} node;
+} node;
 
 typedef struct {
 	node *head;
 	int size;	
-	} LinkedList;
+} LinkedList;
 
 /* Examples of function prototypes, you may define your own functions */
 

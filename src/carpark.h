@@ -1,29 +1,18 @@
-#include <unistd.h>
-#include "fromuni.h"
-#include "fromuni_changes.h"
-#include "keyboard.h"
-#include "car.h"
+#ifndef CARPARK_H
+#define CARPARK_H
 
 // Defines
 #define FALSE 0
 #define TRUE !FALSE
 #define bool int
 
-bool is_carpark_full();
-void clean_carpark();
-bool is_carpark_empty();
-void start_threads();
-void join_threads();
-int thread_sleep_default();
-void stop_running();
-bool should_keep_running();
-void quit();
-void force_quit();
-char random_letter();
-char *random_string(char *str);
-void welcome_text();
-void lock();
-void unlock();
+#include <unistd.h>
+#include "fromuni.h"
+#include "fromuni_changes.h"
+#include "keyboard.h"
+#include "car.h"
+#include "helpers.h"
+
 node *new_node(void *arg);
 node *get_node(int num);
 
@@ -40,3 +29,5 @@ CarQueue _cq;
 LinkedList _ll;
 
 Car _nullcar;
+
+#endif /* end of include guard: CARPARK_H */

@@ -1,4 +1,4 @@
-#include "carpark.h"
+#include "helpers.h"
 
 node *new_node(void *arg)
 {
@@ -103,7 +103,7 @@ void show_cars()
 	if (_ll.size > 0)
 	{
 		node *n = _ll.head;
-		int i;
+
 		while(n->next != NULL)
 		{
 			printf("| %s |", get_car_id(n->car));
