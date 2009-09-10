@@ -25,6 +25,7 @@ node *new_node(void *arg)
 		
 		temp->next = n;
 		n->car = c;
+		n->next = NULL;
 	}
 		
 	_ll.size++;
