@@ -1,4 +1,8 @@
-#include "main.h"
+#include <stdlib.h>
+#include <signal.h>
+
+void quit();
+void force_quit();
 
 int main() {
     signal(SIGINT, quit);

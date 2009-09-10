@@ -1,18 +1,22 @@
-#include "main.h"
+#include <time.h>
+#include "thread_control.h"
+#include "globals.h"
+#include "threads.h"
+#include "bool.h"
 
 /*
     Start all the process threads and init the mutex
 */
 void start_threads() {
     _cp.keep_running = TRUE;
-	_cq.keep_running = TRUE;
-	_cp.size = 0;
-	_cq.size = 0;
-	_cq.index = 0;
+    _cq.keep_running = TRUE;
+    _cp.size = 0;
+    _cq.size = 0;
+    _cq.index = 0;
     
-	_nullcar.id = 0;
-	
-	_ll.size = 0;
+    _nullcar.id = 0;
+    
+    _ll.size = 0;
     pthread_mutex_init(&mutex, NULL);
     
     pthread_create(&t_arrival_queue, NULL, arrival_queue, NULL);

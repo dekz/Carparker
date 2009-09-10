@@ -1,4 +1,8 @@
-#include "main.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include "globals.h"
+#include "helpers.h"
+#include "car.h"
 
 Car *new_car() {
     Car *c = malloc(sizeof(Car));
@@ -11,7 +15,7 @@ Car *new_car() {
 
 char *get_car_id(Car *car) {
     // char *str = malloc(sizeof(*str) * 3);
-    char str[11] = "          ";
+    char str[CAR_ID_SIZE+1] = "          ";
     sprintf(str, "%s%8d", (*car).str, (*car).id);
     return str;
 }

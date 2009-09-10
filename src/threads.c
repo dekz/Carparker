@@ -1,5 +1,8 @@
-#include "main.h"
+#include <stdio.h>
 #include "keyboard.h"
+#include "threads.h"
+#include "helpers.h"
+#include "globals.h"
 
 void *monitor(void *arg) {
     enable_terminal_flush();
@@ -15,7 +18,7 @@ void *monitor(void *arg) {
                 quit();
             } else if(c=='C'||c=='c') {
                 printf("Printing summary...\n");
-				show_cars();
+                show_cars();
             } else {
                 printf("Invalid key. Use either Q or C\n");
             }
@@ -33,10 +36,10 @@ void *enter_carpark(void *arg) {
         if(is_carpark_full()) {
             printf("No parking bays available. Arrival blocked\n");
         } else {
-		//grab the first car in the queue
-			add_car();
-		//add it to the car park where a space is available
-		//print out a message, depending on entrance
+        //grab the first car in the queue
+            add_car();
+        //add it to the car park where a space is available
+        //print out a message, depending on entrance
         }
         
         thread_sleep(500);
@@ -52,16 +55,16 @@ void *departure(void *arg) {
         if(is_carpark_empty()) {
             printf("Car park empty.  Departure blocked\n");
         } else 
-		{
-			int _rand = RAND(0,100);
-			if (_rand <= DEPARTURE_PERCENT_ACTION)
-			{
-				remove_carpark();
-				
-			}
-	
-	//randomly remove a car from the car park
-	//DEALLOC
+        {
+            int _rand = RAND(0,100);
+            if (_rand <= DEPARTURE_PERCENT_ACTION)
+            {
+                remove_carpark();
+                
+            }
+    
+    //randomly remove a car from the car park
+    //DEALLOC
         }
         
         thread_sleep(500);
@@ -70,31 +73,31 @@ void *departure(void *arg) {
 }
 
 void *arrival_queue(void *arg) {
-	
+    
     puts("I am arrival_queue");
 
     while(should_keep_running()) {
-		if (_cq.size  < MAX_QUEUE_SIZE)
-		{
+        if (_cq.size  < MAX_QUEUE_SIZE)
+        {
 
-			//work out the probability of arrival
-			int _rand = RAND(0,100);
-			if (_rand <= ARRIVAL_PERCENT_ACTION)
-			{
-				Car *c;
-				c = new_car();
-				printf("[A] Car Arrived with ID: %s\n", get_car_id(c));
-				
-				lock();
-				_cq.size++;
-				_cq.index++;
-				_cq.buffer[_cq.index] = c;
-				unlock();
-				
-			}
-		
-	
-		}
+            //work out the probability of arrival
+            int _rand = RAND(0,100);
+            if (_rand <= ARRIVAL_PERCENT_ACTION)
+            {
+                Car *c;
+                c = new_car();
+                printf("[A] Car Arrived with ID: %s\n", get_car_id(c));
+                
+                lock();
+                _cq.size++;
+                _cq.index++;
+                _cq.buffer[_cq.index] = c;
+                unlock();
+                
+            }
+        
+    
+        }
         thread_sleep(500);
     }
     
