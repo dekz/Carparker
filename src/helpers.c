@@ -1,14 +1,58 @@
 #include "carpark.h"
 
+node *new_node(void *arg)
+{
+	lock();
+	node *n = malloc(sizeof(node));
+	Car *c = arg;
+	
+	
+	n->next = 0;
+	n->car = c;
+	if (_ll.size == 0)
+	{
+		_ll.head = n;
+		_ll.tail = n;
+		n->prev = 0;
+	} else
+	{
+		node *p = _ll.tail;
+		p->next = n;
+		n->prev = p;
+		_ll.tail = n;
+	}
+	_ll.size++;
+	unlock();
+	return n;
+}
+
+void remove_node(void *arg)
+{
+	lock();
+	node *n = arg;
+	node *_previous = n->prev;
+	node *_next = n->next;
+	printf("attempting to remove node %s", get_car_id(n));
+	_previous->next = _next;
+	_next->prev = _previous;
+	_ll.size--;
+	free(n);
+	unlock();
+}
+
 void show_cars()
 {
-	printf("Total: %d \n", _cp.size);
-	if (_cp.size > 0)
+	printf("Total: %d \n", _ll.size);
+	if (_ll.size > 0)
 	{
-    	int j;
-    	for (j=0; j < _cp.size; j++)
+		node *n = _ll.head;
+		int j;
+		int _t = 0;
+    	for (j=0; j < _ll.size; j++)
     	{
-    		printf("| %s |", get_car_id(_cp.buffer[j]));
+		//	printf("pointer is %d", n->next);
+			printf("| %s |\n", get_car_id(n->car));
+			n = n->next;
     	}
     	printf("\n");
 	}
@@ -18,30 +62,17 @@ void add_car()
 {
 	if (_cq.size > 0)
     {
-    	if (is_carpark_full())
-    	{
-    		printf("Carpark is full \n");
-    	} else if (_cp.size == 0)
-    	{
-		
-    		lock();
-    		_cp.buffer[0] = _cq.buffer[_cq.index];
-    		printf("[C] Car Parked -> %s\n", get_car_id(_cp.buffer[_cp.size]));
-    		_cp.size = 1;
-    		unlock();
-		
-    		remove_car();
-		
-    	} else
-    	{
-    		clean_carpark();
-    		lock();
-    		_cp.buffer[_cp.size] = _cq.buffer[_cq.index];
-    		printf("[C] Car Parked -> %s\n", get_car_id(_cp.buffer[_cp.size]));
-    		_cp.size++;
-    		unlock();
-    		remove_car();
-        }
+		if (_ll.size >= CAR_PARK_SIZE)
+		{
+			printf("car park is full\n");
+		} else 
+		{
+			//get the car from the queue and add it to the linked list
+			Car *_c = _cq.buffer[_cq.index];
+			new_node(_c);
+			printf("[C] Car Parked -> %s\n", get_car_id(_c));
+			remove_car();
+		}
 	} else
 	{
 		printf("No cars in queue\n");
@@ -60,36 +91,33 @@ void remove_car()
 
 void remove_carpark()
 {
-
 	int _rand = 0;
-	_rand = RAND(0,_cp.size-1);
-	clean_carpark();
-	if (_cp.size == 1)
-	{
-		_rand = 0;
-	} else if ((_cp.buffer[_rand])->id != 0)
-	{
-		lock();
+	_rand = RAND(0,_ll.size-1);
+	remove_node(get_node(_rand));
+}
 
-		printf("[D] Car Depearting -> %s | %d\n",  get_car_id(_cp.buffer[_rand]), _cp.buffer[_rand]);
-		printf("Attempting to free %d, rand is %d, set to null\n", _cp.buffer[_rand], _rand);
-		free(_cp.buffer[_rand]);
-		_cp.buffer[_rand] = &_nullcar;
-		_cp.size--;
-		unlock();
-		//clean_carpark();
-		
+node *get_node(int num)
+{
+	node *n = _ll.tail; //just incase
+	if (!(_ll.size <= num))
+	{
+		printf("Error: linked list too small\n");
 	} else
 	{
-		//pointing to a null
-		printf("problem in the array with null and 0, attempting clean up rand: %d size: %d\n" , _rand, _cp.size);
+		int i;
+		for (i=0; i < num; i++)
+		{
+			n = n->next;
+		}
 	}
+	return n;
 }
 
 void clean_carpark()
 {
 	
 	//find old cars and dealloc them also?
+/*
 	int i = 0;
 	int j = 0;
 
@@ -116,6 +144,7 @@ void clean_carpark()
 			}
 		}
 	}
+	*/
 }
 
 bool is_carpark_full() {

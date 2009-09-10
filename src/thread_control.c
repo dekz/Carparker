@@ -11,6 +11,8 @@ void start_threads() {
 	_cq.index = 0;
     
 	_nullcar.id = 0;
+	
+	_ll.size = 0;
     pthread_mutex_init(&mutex, NULL);
     
     pthread_create(&t_arrival_queue, NULL, arrival_queue, NULL);

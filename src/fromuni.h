@@ -46,6 +46,17 @@ typedef struct {
 	int index;
 	} CarQueue;
 
+typedef struct {
+	Car *car;
+	struct node *next;
+	struct node *prev;
+	} node;
+
+typedef struct {
+	node *head;
+	node *tail;
+	int size;	
+	} LinkedList;
 
 /* Examples of function prototypes, you may define your own functions */
 

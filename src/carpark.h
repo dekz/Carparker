@@ -24,6 +24,8 @@ char *random_string(char *str);
 void welcome_text();
 void lock();
 void unlock();
+node *new_node(void *arg);
+node *get_node(int num);
 
 // Threads
 pthread_mutex_t mutex;
@@ -35,5 +37,6 @@ pthread_t t_monitor;
 // Our carpark store
 CarPark _cp;
 CarQueue _cq;
+LinkedList _ll;
 
 Car _nullcar;
