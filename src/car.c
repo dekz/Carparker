@@ -15,7 +15,7 @@ Car *new_car() {
 
 char *get_car_id(Car *car) {
     // char *str = malloc(sizeof(*str) * 3);
-    char str[CAR_ID_SIZE+1] = "          ";
-    sprintf(str, "%s%8d", (*car).str, (*car).id);
+    static char str[CAR_ID_SIZE+1] = "          ";
+    sprintf(str, "%s%8d", car->str, car->id);
     return str;
 }
