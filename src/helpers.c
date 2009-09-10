@@ -49,6 +49,7 @@ void delete_node(int n)
 	} else if (_ll.size == 1)
 	{
 		printf("Deleting the last node\n");
+		printf("[D] Car Departing -> %s", get_car_id(_ll.head->car));
 		free(_ll.head);
 		_ll.head = NULL;
 	} 
@@ -70,7 +71,7 @@ void delete_node(int n)
 	printf("Crash zone B3 %d\n", p->next);
 	node *d = p->next;
 	p->next = NULL;
-	
+	printf("[D] Car Departing -> %s", get_car_id(d->car));
 	printf("Crash zone B4\n");
 	
 	_ll.size--;
