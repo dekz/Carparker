@@ -34,7 +34,7 @@ void add_car()
 		
     	} else
     	{
-    		//clean_carpark();
+    		clean_carpark();
     		lock();
     		_cp.buffer[_cp.size] = _cq.buffer[_cq.index];
     		printf("[C] Car Parked -> %s\n", get_car_id(_cp.buffer[_cp.size]));
@@ -58,25 +58,57 @@ void remove_car()
 	unlock();
 }
 
+void remove_carpark()
+{
+
+	int _rand = 0;
+	_rand = RAND(0,_cp.size-1);
+	clean_carpark();
+	if (_cp.size == 1)
+	{
+		_rand = 0;
+	} else if ((_cp.buffer[_rand] != NULL) || _cp.buffer[_rand] != 0)
+	{
+		lock();
+		printf("[D] Car Depearting -> %s | %d\n",  get_car_id(_cp.buffer[_rand]), _cp.buffer[_rand]);
+		printf("Attempting to free %d, rand is %d\n", _cp.buffer[_rand], _rand);
+		free(_cp.buffer[_rand]);
+		_cp.size--;
+		unlock();
+		clean_carpark();
+		
+	} else
+	{
+		//pointing to a null
+		printf("problem in the array with null and 0, attempting clean up rand: %d size: %d\n" , _rand, _cp.size);
+	}
+}
+
 void clean_carpark()
 {
+	
+	//find old cars and dealloc them also?
 	int i = 0;
 	int j = 0;
-	printf("No crash -1\n");
+
 	if ((!is_carpark_empty()) && (!is_carpark_full()))
 	{
-		for (i=0; i <= _cp.size; i++)
+		for (i=0; i < _cp.size; i++)
 		{
-					printf("No crash 0\n");
-			if (_cp.buffer[i]->id == 0)
+			
+			if( (_cp.buffer[i]->id == 0) || (_cp.buffer[i] == NULL))
 			{
-						printf("No crash 1\n");
-				for (j=i; j <= _cp.size-1; j++)
+				printf("Found something to dealloc\n");
+				//dealloc the pointer to the structure
+				for (j=i; j < _cp.size; j++)
 				{
 					//i is blank, move j to i and more the rest down
-					_cp.buffer[j] == _cp.buffer[j+1];
 					printf("[C_P] Swapping %s", get_car_id(_cp.buffer[j]));
 					printf(" and %s \n", get_car_id(_cp.buffer[j+1]));
+					lock();
+					_cp.buffer[j] = _cp.buffer[j+1];
+					unlock();
+				
 				}
 				
 			}

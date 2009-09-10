@@ -51,7 +51,15 @@ void *departure(void *arg) {
     while(should_keep_running()) {
         if(is_carpark_empty()) {
             printf("Car park empty.  Departure blocked\n");
-        } else {
+        } else 
+		{
+			int _rand = RAND(0,100);
+			if (_rand <= DEPARTURE_PERCENT_ACTION)
+			{
+				remove_carpark();
+				
+			}
+	
 	//randomly remove a car from the car park
 	//DEALLOC
         }
