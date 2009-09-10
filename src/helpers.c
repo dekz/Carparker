@@ -10,6 +10,7 @@ node *new_node(void *arg)
 	{
 		_ll.head = n;
 		n->car = c;
+		n->next = NULL;
 		_ll.size = 1;
 		
 	} else {
@@ -55,12 +56,12 @@ void delete_node(int n)
 		printf("Crash zone B2, going until %d\n", n);
 		while(i<n-1)
 		{
+			printf("%d\n", i);
 			if(p->next == NULL)
 				{
 					printf("freak the fuck out\n");
 				}
 			p = p->next;
-			printf("%d\n", i);
 			i++;
 			
 		}
@@ -95,9 +96,8 @@ void show_cars()
 		int i;
 		while(n->next != NULL)
 		{
-			printf("Crash zone C2.1\n");
+			printf("| %s |", get_car_id(n->car));
 			n = n->next;
-			printf("| %s |", get_car_id(n));
 		}
     	
     	printf("\n");
