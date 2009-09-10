@@ -103,7 +103,7 @@ void *arrival_queue(void *arg) {
                 _cq.size++;
 				printf("ARRIVAL QUEUE INDEX(1) %d\n", _cq.index);
                 _cq.buffer[_cq.index] = c;
-				printf("ARRIVAL QUEUE INDEX(2) %d\n", _cq.index);
+				printf("ARRIVAL QUEUE INDEX(2) %d car pointer is %p\n", _cq.index, _cq.buffer[_cq.index]);
                 unlock();
 				}
                 
