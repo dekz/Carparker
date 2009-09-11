@@ -3,15 +3,18 @@ CFLAGS=-Wall -pthread -pedantic -std=gnu99 -g
 COMMAND=$(CC) $(CFLAGS)
 
 SRC=src/*.c
-BIN=bin/carparker
+BIN=build/carparker
 
 all: compile run
 
-compile: clean
+compile: clean build_dir
 	$(COMMAND) -o $(BIN) $(SRC)
 
 run:
 	$(BIN)
 
+build_dir:
+	mkdir build
+
 clean:
-	rm -rf bin/*
+	rm -rf build
