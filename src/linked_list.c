@@ -77,6 +77,7 @@ void delete_node(int n)
         //d is now the last node
         p->next = NULL;
         printf("[D] Car Departing -> %s\n", get_car_id(d->car));
+
         free(d);
         _ll.size--;
     }

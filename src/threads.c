@@ -92,10 +92,10 @@ void *arrival_queue(void *arg) {
             {
 				Car *c;
                 c = new_car();				
-
+				
                 if (c != NULL)
 				{
-				printf("[A] Car Arrived with ID: %s at time %s\n", get_car_id(c), get_car_time(c));
+				printf("[A] Car Arrived with ID: %s at time %s \n", get_car_id(c), get_car_time(c));
                 
                 lock();
                 _cq.size++;
