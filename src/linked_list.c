@@ -7,39 +7,45 @@
 
 node *new_node(void *arg)
 {
- 	lock();
+	printf("ADDING NODE START\n");
+	
+	lock();
     node *n = malloc(sizeof(node));
     Car *c = arg;
 	if (c == NULL)
+	{
+		printf("why is there a null?\n");
+	}
+	n->car = c;
+	n->next = NULL;
+
+	if (_ll.size == 0)
+	{
+		_ll.head = n;
+		_ll.size = 1;
+	} else
+	{
+		node *p = _ll.head;
+		int i;
+		for (i=1; i < _ll.size-1; i++)
 		{
-			printf("trying to add a null car what \n");
+			p = p->next;
 		}
-    n->car = c;
-    n->next = NULL;
-    
-    if (_ll.size == 0)
-    {
-        _ll.head = n;
-        _ll.size = 1;
-    } else
-    {
-        node *temp = _ll.head;
-        while (temp->next != NULL)
-        {
-            temp = temp->next;
-        }
-        
-        temp->next = n;
-        _ll.size++; 
-    }
+		printf("SIZE IS %d, RETURNING NODE NUMBER %d\n", _ll.size, i);
+		//p should now be the last node;
+		p->next = n;
+		_ll.size++;	
+	}
+
     unlock();
+	printf("ADDING NODE END\n");
     return n;
 }
 
 
 void delete_node(int n)
 {
-
+	printf("DELETE NODE START\n");
 	lock();
     node *p = _ll.head;
 <<<<<<< HEAD:src/linked_list.c
@@ -87,26 +93,31 @@ void delete_node(int n)
 	if (n == 1)
 	{
 		//remove first node
+		printf("REMOVING FIRST NODE\n");
 		_ll.head = NULL;
 		_ll.size--;
 		printf("[D] Car Departing -> %s\n", get_car_id(p->car));
 		free(p);
 	} else 
 	{
-		int i=0;
+		int i=1;
 		//return the 2nd last node
-		for(i=0; i < _ll.size-1; i++)
+		for(i=1; i < n-1; i++)
 		{
 			p = p->next;
 		}
+		printf("CRASH ZONE 1\n");
 		node *d = p->next;
+		printf("CRASH ZONE 2\n");
 		p->next = NULL;
 		_ll.size--;
+		printf("CRASH ZONE 3\n");
 		printf("[D] Car Departing -> %s\n", get_car_id(d->car));
 		free(d);
+		printf("CRASH ZONE 4\n");
 		
 	}
-	
+	printf("DELETE NODE END\n");
 
 >>>>>>> rewrote delete_node:src/linked_list.c
     unlock();
