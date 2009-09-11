@@ -45,9 +45,17 @@ void add_car()
 			time_t now;
 			new_node(_cq.buffer[_cq.index]);
 			Car *c = _cq.buffer[_cq.index];
-			c->cartime = time(NULL);
-            printf("[C] Car Parked -> %s at time %s", get_car_id(_cq.buffer[_cq.index]), ctime(&c->cartime));
+			
+			struct tm  *ts;
+			char buf[80];
+			now = time(NULL);
+			
+			ts = localtime(&now);
+			strftime(buf, sizeof(buf), "%H:%M:%S", ts);
+			c->cartime = now;
+            printf("[C] Car Parked -> %s at time %s\n", get_car_id(_cq.buffer[_cq.index]), buf);
 			remove_car();
+		
 			}
 			else {
 				printf("WHY IS THERE A NULL, removing broken car\n");

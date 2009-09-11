@@ -100,7 +100,7 @@ void *arrival_queue(void *arg) {
 				
 				ts = localtime(&now);
 				strftime(buf, sizeof(buf), "%H:%M:%S", ts);
-				
+				c->cartime = now;
 				
                 if (c != NULL)
 				{
