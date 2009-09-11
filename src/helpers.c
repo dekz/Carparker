@@ -56,7 +56,10 @@ void park_car_from_queue()
     			c->cartime = time(NULL);
 		
                 // TODO: print out entrance number
-                printf("[C] Car %s Parked at %s\n", get_car_id(_cq.buffer[_cq.index]), get_car_time(c));
+                printf("[C] Car %s Parked at %s through entrance %d\n", 
+                    get_car_id(_cq.buffer[_cq.index]),
+                    get_car_time(c),
+                    get_car_entrance(c));
     			remove_car_from_queue();
 			}
         }
@@ -64,6 +67,10 @@ void park_car_from_queue()
     {
         printf("[C]\tNo cars in queue\n");
     }
+}
+
+uint get_car_entrance(Car *c) {
+    return (uint)abs((c->id % 2) - 2);
 }
 
 void remove_car_from_queue()

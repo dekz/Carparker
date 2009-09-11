@@ -7,7 +7,7 @@
 
 /* generates a random number between min and max inclusive */
 #define RAND(min,max) ((min)+(int)((double)(max-min+1)*rand()/(RAND_MAX+1.0)))
-
+#define uint unsigned int
 
 void exit_with_error(char *message);
 bool is_carpark_full();
@@ -25,6 +25,6 @@ void welcome_text();
 void lock();
 void unlock();
 void print_car_departure(Car *c, int n);
-
+uint get_car_entrance(Car *c);
 
 #endif /* end of include guard: HELPERS_H */
