@@ -28,7 +28,7 @@ bool new_node(Car *car)
         current->next = new_node;
     }
     
-    ++_cp.size;
+    _cp.size++;
     unlock();
     
     return TRUE;
@@ -53,7 +53,7 @@ void delete_node(int n)
     if(n == 1) {
         _cp.head = current->next;
     } else {
-        for(int i = 1; i < n - 1; ++i) {
+        for(int i = 0; i < n - 1; ++i) {
             previous = current;
             current = current->next;
         }
@@ -62,9 +62,9 @@ void delete_node(int n)
     }
 
     print_car_departure(current->car, n);
-	printf("attempting to free current\n");
+
     free(current);
-	printf("freeing current\n");
+
     _cp.size--;
 	
     unlock();
