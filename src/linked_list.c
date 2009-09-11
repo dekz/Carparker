@@ -46,7 +46,7 @@ void delete_node(int n)
         printf("Error: No Cars to Remove\n");
     } else if (n == _ll.size)
     {
-        printf("[D] Car Departing -> %s\n", get_car_id(p->car));  
+        print_car_departure(p->car, n);
         int i = 1;
         for (i=1; i < _ll.size-1; i++)
         {
@@ -76,8 +76,7 @@ void delete_node(int n)
         node *d = p->next;
         //d is now the last node
         p->next = NULL;
-        printf("[D] Car Departing -> %s\n", get_car_id(d->car));
-
+        print_car_departure(d->car, n);
         free(d);
         _ll.size--;
     }

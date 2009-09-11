@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include "bool.h"
+#include "car.h"
 
 /* generates a random number between min and max inclusive */
 #define RAND(min,max) ((min)+(int)((double)(max-min+1)*rand()/(RAND_MAX+1.0)))
@@ -23,5 +24,7 @@ char *random_string(char *str);
 void welcome_text();
 void lock();
 void unlock();
+void print_car_departure(Car *c, int n);
+
 
 #endif /* end of include guard: HELPERS_H */

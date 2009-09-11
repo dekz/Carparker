@@ -124,3 +124,7 @@ void welcome_text() {
     puts("\n<--- Press return to continue --->\n");
     getchar();
 }
+
+void print_car_departure(Car *c, int n) {
+    printf("[D] Car Departing from space #%d -> %s\n", n, get_car_id(c));  
+}
