@@ -21,15 +21,14 @@ void show_cars()
         node *n = _ll.head;
 		printf("Car Bay 1 | %s | arrived at %s\n", get_car_id(n->car), get_car_time(n->car));
 		int i = 2;
-		while(n->next != NULL)
+         while(n->next != NULL)
         {
-			n = n->next;
+            n = n->next;
             printf("Car Bay %d | %s | arrived at %s\n", i, get_car_id(n->car), get_car_time(n->car));
-			i++;
+            i++;
         }
-
-        
-        printf("\n");
+        n = n->next;
+        printf("Car Bay %d | %s | arrived at %s\n", i, get_car_id(n->car), get_car_time(n->car));
     }
 	unlock();
 }
