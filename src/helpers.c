@@ -21,15 +21,18 @@ void show_cars()
     {
         node *n = _cp.head;
 		int i = 0;
+		time_t now;
+		now = time(NULL);
+	   // printf("[D] Car %s Departing | Parked for: %5.2f\n", get_car_id(c), difftime(now, c->cartime));
 		
-		printf("     # |    Car ID    | Car Park Time\n");
-		printf("     --------------------------------\n");
+		printf("     # |    Car ID    | Car Park Time | Time Spent  \n");
+		printf("     ----------------------------------------------\n");
 
         while(TRUE) {
             if(n == NULL) break;
             
             i++;
-            printf("    %2d |  %s  |   %s \n", i, get_car_id(n->car), get_car_time(n->car));
+            printf("    %2d |  %s   |   %s   |%5.0f \n", i, get_car_id(n->car), get_car_time(n->car), difftime(now, (n->car)->cartime));
             n = n->next;
         }
     } else {
@@ -122,5 +125,5 @@ void welcome_text() {
 void print_car_departure(Car *c, int n) {
 	time_t now;
 	now = time(NULL);
-    printf("[D] Car %s Departing | Parked for: %5.2f\n", get_car_id(c), difftime(now, c->cartime));  
+    printf("[D] Car %s Departing | Parked for: %5.0f\n", get_car_id(c), difftime(now, c->cartime));  
 }
