@@ -19,16 +19,21 @@ void show_cars()
     if (_cp.size > 0)
     {
         node *n = _cp.head;
-		printf("Car Bay 1 | %s | arrived at %s\n", get_car_id(n->car), get_car_time(n->car));
-		int i = 2;
-         while(n->next != NULL)
-        {
-            n = n->next;
-            printf("Car Bay %d | %s | arrived at %s\n", i, get_car_id(n->car), get_car_time(n->car));
-            i++;
-        }
-        n = n->next;
-        printf("Car Bay %d | %s | arrived at %s\n", i, get_car_id(n->car), get_car_time(n->car));
+		int i=1;
+		if (_cp.size ==1)
+		{
+			printf("%d | %s | %s \n", i, get_car_id(n->car), get_car_time(n->car));
+		} else {
+			
+			for (i=1; i <= _cp.size; i++)
+			{
+				printf("%d | %s | %s \n", i, get_car_id(n->car), get_car_time(n->car));
+				n = n->next;
+			}
+			
+		}
+		
+		
     }
 	unlock();
 }
