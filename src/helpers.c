@@ -33,7 +33,7 @@ void show_cars()
 	unlock();
 }
 
-void add_car()
+void park_car_from_queue()
 {
     if (_cq.size > 0)
     {
@@ -42,35 +42,22 @@ void add_car()
             printf("car park is full\n");
         } else 
         {
-			//get the car from the queue and add it to the linked list
-			if (_cq.buffer[_cq.index] != NULL)
-			{
-			time_t now;
-			new_node(_cq.buffer[_cq.index]);
-			Car *c = _cq.buffer[_cq.index];
-			
-			now = time(NULL);
-			c->cartime = now;
-			
-            printf("[C] Car Parked -> %s at time %s\n", get_car_id(_cq.buffer[_cq.index]), get_car_time(c));
-			remove_car();
+			if(new_node(_cq.buffer[_cq.index])) {
+    			Car *c = _cq.buffer[_cq.index];
+    			c->cartime = time(NULL);
 		
+                // TODO: print out entrance number
+                printf("[C] Car Parked -> %s at time %s\n", get_car_id(_cq.buffer[_cq.index]), get_car_time(c));
+    			remove_car_from_queue();
 			}
-			else {
-				printf("NULL found, removing broken car\n");
-				remove_car();
-			}
-
         }
     } else
     {
         printf("No cars in queue\n");
     }
-
-
 }
 
-void remove_car()
+void remove_car_from_queue()
 {
 	lock();
 	_cq.index = ((_cq.index+1) % MAX_QUEUE_SIZE);

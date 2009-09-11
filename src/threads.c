@@ -39,16 +39,14 @@ void *enter_carpark(void *arg) {
         if(is_carpark_full()) {
             printf("No parking bays available. Arrival blocked\n");
         } else {
-        //grab the first car in the queue
-		if (_cq.size > 0)
-		{
-			add_car();
-		} else 
-		{
-			printf("No Cars in the queue\n");
-		}
-        //add it to the car park where a space is available
-        //print out a message, depending on entrance
+            //grab the first car in the queue
+    		if (_cq.size > 0)
+    		{
+    			park_car_from_queue();
+    		} else 
+    		{
+    			printf("No Cars in the queue\n");
+    		}
         }
         
         thread_sleep(1000);

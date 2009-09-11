@@ -19,6 +19,6 @@ typedef struct {
 } CarQueue;
 
 void remove_car_park();
-void add_car();
-void remove_car();
+void park_car_from_queue();
+void remove_car_from_queue();
 void show_cars();

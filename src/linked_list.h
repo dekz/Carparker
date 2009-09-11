@@ -1,6 +1,7 @@
 #ifndef LINKED_LIST_H
 #define LINKED_LIST_H
 
+#include "bool.h"
 #include "car.h"
 
 typedef struct node {
@@ -13,7 +14,7 @@ typedef struct LinkedList {
 	int size;	
 } LinkedList;
 
-node *new_node(void *arg);
+bool new_node(Car *car);
 node *get_node(int num);
 void delete_node(int n);
 

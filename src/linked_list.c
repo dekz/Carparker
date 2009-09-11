@@ -5,41 +5,33 @@
 #include "globals.h"
 #include "helpers.h"
 
-node *new_node(void *arg)
+bool new_node(Car *car)
 {
-	printf("ADDING NODE START\n");
+    if(car == NULL) return FALSE;
+    
+
+    node *new_node = malloc(sizeof(node));
+    new_node->car  = car;
+    new_node->next = NULL;
 	
 	lock();
-    node *n = malloc(sizeof(node));
-    Car *c = arg;
-	if (c == NULL)
-	{
-		printf("why is there a null?\n");
-	}
-	n->car = c;
-	n->next = NULL;
-
-	if (_cp.head == NULL)
-	{
-		_cp.head = n;
-		_cp.size = 1;
-	} else
-	{
-		node *p = _cp.head;
-		int i;
-		for (i=1; i < _cp.size-1; i++)
-		{
-			p = p->next;
-		}
-		printf("SIZE IS %d, RETURNING NODE NUMBER %d\n", _cp.size, i);
-		//p should now be the last node;
-		p->next = n;
-		_cp.size++;	
-	}
-
+	
+    node *current = _cp.head;
+    
+    if(current == NULL) {
+        _cp.head = new_node;
+    } else {
+        while(current->next != NULL) {
+            current = current->next;
+        }
+        
+        current->next = new_node;
+    }
+    
+    ++_cp.size;
     unlock();
-	printf("ADDING NODE END\n");
-    return n;
+    
+    return TRUE;
 }
 
 
@@ -67,6 +59,8 @@ void delete_node(int n)
         
         previous->next = current->next;
     }
+    
+    print_car_departure(current->car, n);
     
     free(current);
     _cp.size--;
