@@ -15,10 +15,10 @@ void remove_carpark()
 void show_cars()
 {
 	lock();
-    printf("Current: %d Total: %d \n", _cp.size, CAR_PARK_SIZE);
-    if (_cp.size > 0)
+    printf("Current: %d Total: %d \n", _ll.size, CAR_PARK_SIZE);
+    if (_ll.size > 0)
     {
-        node *n = _cp.head;
+        node *n = _ll.head;
 		printf("Car Bay 1 | %s | arrived at %s\n", get_car_id(n->car), get_car_time(n->car));
 		int i = 2;
          while(n->next != NULL)
@@ -27,12 +27,8 @@ void show_cars()
             printf("Car Bay %d | %s | arrived at %s\n", i, get_car_id(n->car), get_car_time(n->car));
             i++;
         }
-
-		n = n->next;
-		printf("Car Bay %d | %s | arrived at %s\n", i, get_car_id(n->car), get_car_time(n->car));
-
-        
-        printf("\n");
+        n = n->next;
+        printf("Car Bay %d | %s | arrived at %s\n", i, get_car_id(n->car), get_car_time(n->car));
     }
 	unlock();
 }
