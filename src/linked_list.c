@@ -50,42 +50,26 @@ void delete_node(int n)
 		return;
 	}
 	
-	
-	lock();
-    node *p = _ll.head;
-    
-	if (n == 1)
-	{
-		//remove first node
-		_ll.head = p->next;
-		_ll.size--;
-        print_car_departure(p->car, n);
-		free(p);
-	} else 
-	{
-		node *d;
-		
-		if(_ll.size == 1) {
-			_ll.head = NULL;
-			d = p;
-		}
-		else {
-			//return the 2nd last node
-			for(int i=1; i < _ll.size-2; i++)
-			{
-				p = p->next;
-			}
-			
-			d = p->next;
-			p->next = NULL;
-		}
-		
-		_ll.size--;
-		print_car_departure(d->car, n);
-		free(d);
-		
+	if(n > _ll.size) {
+        return;
 	}
 	
-    unlock();
+	lock();
+    node *previous, *current = _ll.head;
+	
+    if(n == 1) {
+        _ll.head = current->next;
+    } else {
+        for(int i = 0; i < n - 1; ++i) {
+            previous = current;
+            current = current->next;
+        }
+        
+        previous->next = current->next;
+    }
     
+    free(current);
+    _ll.size--;
+	
+    unlock();
 }
