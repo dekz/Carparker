@@ -15,23 +15,27 @@ void remove_carpark()
 void show_cars()
 {
 	lock();
-    printf("Current: %d Total: %d \n", _cp.size, CAR_PARK_SIZE);
+    printf("\n[S] === %s === ", CAR_PARK);
+    printf("Car Count: %3d     Max Cars: %3d\n\n", _cp.size, CAR_PARK_SIZE);
     if (_cp.size > 0)
     {
         node *n = _cp.head;
-        
 		int i = 0;
-        
+		
+		printf("     # |    Car ID    | Car Park Time\n");
+		printf("     --------------------------------\n");
+
         while(TRUE) {
             if(n == NULL) break;
             
             i++;
-            printf("    %2d | %s | %s \n", i, get_car_id(n->car), get_car_time(n->car));
+            printf("    %2d |  %s  |   %s \n", i, get_car_id(n->car), get_car_time(n->car));
             n = n->next;
         }
     } else {
         puts("    No cars currently in the car park...");
     }
+    printf("\n");
 	unlock();
 }
 
@@ -41,7 +45,7 @@ void park_car_from_queue()
     {
         if (_cp.size >= CAR_PARK_SIZE)
         {
-            printf("car park is full\n");
+            printf("[C]\tCar park is full...\n");
         } else 
         {
 			if(new_node(_cq.buffer[_cq.index])) {
@@ -49,13 +53,13 @@ void park_car_from_queue()
     			c->cartime = time(NULL);
 		
                 // TODO: print out entrance number
-                printf("[C] Car Parked -> %s at time %s\n", get_car_id(_cq.buffer[_cq.index]), get_car_time(c));
+                printf("[C] Car %s Parked at %s\n", get_car_id(_cq.buffer[_cq.index]), get_car_time(c));
     			remove_car_from_queue();
 			}
         }
     } else
     {
-        printf("No cars in queue\n");
+        printf("[C]\tNo cars in queue\n");
     }
 }
 
@@ -116,5 +120,5 @@ void welcome_text() {
 }
 
 void print_car_departure(Car *c, int n) {
-    printf("[D] Car Departing from space #%d -> %s\n", n, get_car_id(c));  
+    printf("[D] Car %s Departing\n", get_car_id(c));  
 }
