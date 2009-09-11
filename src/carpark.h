@@ -18,13 +18,6 @@ typedef struct {
 	int index;
 } CarQueue;
 
-typedef struct {
-    Car *buffer[CAR_PARK_SIZE];       // stores carpark cars
-    char *arrival_time[CAR_PARK_SIZE]; // stores arrival time of cars
-    int  keep_running;		         // set false to exit threads
-    int  size;			         // current size of carpark
-} CarPark;
-
 void remove_car_park();
 void add_car();
 void remove_car();

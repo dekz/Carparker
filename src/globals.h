@@ -2,6 +2,7 @@
 #include "car.h"
 #include "linked_list.h"
 #include "carpark.h"
+#include "bool.h"
 
 // Threads
 pthread_mutex_t mutex;
@@ -11,8 +12,6 @@ pthread_t t_departure;
 pthread_t t_monitor;
 
 // Our carpark store
-CarPark _cp;
+bool g_keep_running;
 CarQueue _cq;
 LinkedList _ll;
-
-Car _nullcar;

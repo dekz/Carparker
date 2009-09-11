@@ -93,7 +93,7 @@ void exit_with_error(char *message) {
 }
 
 bool should_keep_running() {
-    return _cp.keep_running;
+    return g_keep_running;
 }
 
 void stop_running() {
@@ -101,7 +101,7 @@ void stop_running() {
     // needed as nothing else modifies
     // this flag, but we'll be safe
     lock();
-    _cp.keep_running = FALSE;
+    g_keep_running = FALSE;
     unlock();
 }
 

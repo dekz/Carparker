@@ -8,15 +8,11 @@
     Start all the process threads and init the mutex
 */
 void start_threads() {
-    _cp.keep_running = TRUE;
-    _cq.keep_running = TRUE;
-    _cp.size = 0;
-    _cq.size = 0;
-    _cq.index = 0;
+    g_keep_running = TRUE;
     
-    _nullcar.id = 0;
-    
+    _ll.head = NULL;
     _ll.size = 0;
+    
     pthread_mutex_init(&mutex, NULL);
     
     pthread_create(&t_arrival_queue, NULL, arrival_queue, NULL);
