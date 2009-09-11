@@ -16,7 +16,7 @@ void show_cars()
 {
 	lock();
     printf("\n[S] === %s === ", CAR_PARK);
-    printf("Car Count: %3d     Max Cars: %3d\n\n", _cp.size, CAR_PARK_SIZE);
+    printf("(Car Count: %3d     Max Cars: %3d)\n\n", _cp.size, CAR_PARK_SIZE);
     if (_cp.size > 0)
     {
         node *n = _cp.head;
@@ -132,5 +132,5 @@ void welcome_text() {
 void print_car_departure(Car *c, int n) {
 	time_t now;
 	now = time(NULL);
-    printf("[D] Car %s Departing | Parked for: %5.0f\n", get_car_id(c), difftime(now, c->cartime));  
+    printf("[D] Car %s Departing | Parked for: %5.0f seconds\n", get_car_id(c), difftime(now, c->cartime));  
 }

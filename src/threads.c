@@ -34,7 +34,8 @@ void *monitor(void *arg) {
 void *enter_carpark(void *arg) {
     while(should_keep_running()) {
         if(is_carpark_full()) {
-            printf("[C]\tNo parking bays available. Arrival blocked\n");
+            printf("[C]\tNo parking bays available. Parking blocked\n");
+            thread_sleep_default();
         } else {
             //grab the first car in the queue
     		if (_cq.size > 0)
@@ -46,7 +47,7 @@ void *enter_carpark(void *arg) {
     		}
         }
         
-        thread_sleep(1000);
+        thread_sleep_default();
     }
     return NULL;
 }
@@ -55,6 +56,7 @@ void *departure(void *arg) {
     while(should_keep_running()) {
         if(is_carpark_empty()) {
             printf("[D]\tCar park empty. Departure blocked\n");
+            thread_sleep_default();
         } else 
         {
             int _rand = RAND(0,100);
@@ -65,7 +67,7 @@ void *departure(void *arg) {
    
         }
         
-        thread_sleep(1000);
+        thread_sleep_default();
     }
     return NULL;
 }
@@ -84,7 +86,7 @@ void *arrival_queue(void *arg) {
 				
                 if (c != NULL)
 				{
-				printf("[A] Car %s Arrived at %s\n", get_car_id(c), get_car_time(c));
+				printf("[A] Car %s Queued at %s\n", get_car_id(c), get_car_time(c));
                 
                 lock();
                 _cq.size++;
@@ -98,7 +100,7 @@ void *arrival_queue(void *arg) {
         
     
         }
-        thread_sleep(1000);
+        thread_sleep_default();
     }
     
     return NULL;
