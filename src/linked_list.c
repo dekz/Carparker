@@ -4,11 +4,12 @@
 #include "linked_list.h"
 #include "globals.h"
 #include "helpers.h"
+#include "string.h"
 
 bool new_node(Car *car)
 {
-    if(car == NULL) return FALSE;
-    
+    if(car == NULL)          return FALSE; // we don't want NULL in our list
+    if(linked_list_contains(car)) return FALSE; // only add cars once
 
     node *new_node = malloc(sizeof(node));
     new_node->car  = car;
@@ -32,6 +33,24 @@ bool new_node(Car *car)
     unlock();
     
     return TRUE;
+}
+
+bool linked_list_contains(Car *car) {
+    node *current = _cp.head;
+    while(current != NULL) {
+        if(current->car == car) return TRUE;
+        
+        char *id1 = malloc(sizeof(char) * CAR_ID_SIZE);
+        char *id2 = malloc(sizeof(char) * CAR_ID_SIZE);
+
+        strcpy(id1, get_car_id(car));
+        strcpy(id2, get_car_id(current->car));
+        
+        if(strcmp(id1, id2) == 0) return TRUE;
+
+        current = current->next;
+    }
+    return FALSE;
 }
 
 

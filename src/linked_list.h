@@ -17,5 +17,6 @@ typedef struct LinkedList {
 bool new_node(Car *car);
 node *get_node(int num);
 void delete_node(int n);
+bool linked_list_contains(Car *car);
 
 #endif /* end of include guard: LINKED_LIST_H */
