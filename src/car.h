@@ -14,5 +14,5 @@ typedef struct {
 
 Car *new_car();
 char *get_car_id(Car *car);
-
+char *get_car_time(Car *car);
 #endif

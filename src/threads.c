@@ -91,20 +91,11 @@ void *arrival_queue(void *arg) {
             if (_rand <= ARRIVAL_PERCENT_ACTION)
             {
 				Car *c;
-                c = new_car();
-				
-				time_t     now;
-				struct tm  *ts;
-				char buf[80];
-				now = time(NULL);
-				
-				ts = localtime(&now);
-				strftime(buf, sizeof(buf), "%H:%M:%S", ts);
-				c->cartime = now;
-				
+                c = new_car();				
+
                 if (c != NULL)
 				{
-				printf("[A] Car Arrived with ID: %s at time %s\n", get_car_id(c), buf);
+				printf("[A] Car Arrived with ID: %s at time %s\n", get_car_id(c), get_car_time(c));
                 
                 lock();
                 _cq.size++;

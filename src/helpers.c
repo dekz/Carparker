@@ -14,15 +14,17 @@ void remove_carpark()
 
 void show_cars()
 {
-    printf("Total: %d \n", _ll.size);
+    printf("Current: %d Total: %d \n", _ll.size, CAR_PARK_SIZE);
     if (_ll.size > 0)
     {
         node *n = _ll.head;
-		printf("| %s |", get_car_id(n->car));
-        while(n->next != NULL)
+		printf("Car Bay 1 | %s | arrived at %s\n", get_car_id(n->car), get_car_time(n->car));
+		int i = 2;
+		while(n->next != NULL)
         {
 			n = n->next;
-            printf("| %s |", get_car_id(n->car));
+            printf("Car Bay %d | %s | arrived at %s\n", i, get_car_id(n->car), get_car_time(n->car));
+			i++;
         }
 
         
@@ -46,19 +48,15 @@ void add_car()
 			new_node(_cq.buffer[_cq.index]);
 			Car *c = _cq.buffer[_cq.index];
 			
-			struct tm  *ts;
-			char buf[80];
 			now = time(NULL);
-			
-			ts = localtime(&now);
-			strftime(buf, sizeof(buf), "%H:%M:%S", ts);
 			c->cartime = now;
-            printf("[C] Car Parked -> %s at time %s\n", get_car_id(_cq.buffer[_cq.index]), buf);
+			
+            printf("[C] Car Parked -> %s at time %s\n", get_car_id(_cq.buffer[_cq.index]), get_car_time(c));
 			remove_car();
 		
 			}
 			else {
-				printf("WHY IS THERE A NULL, removing broken car\n");
+				printf("NULL found, removing broken car\n");
 				remove_car();
 			}
 
