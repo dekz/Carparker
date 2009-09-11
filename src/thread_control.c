@@ -10,8 +10,8 @@
 void start_threads() {
     g_keep_running = TRUE;
     
-    _ll.head = NULL;
-    _ll.size = 0;
+    _cp.head = NULL;
+    _cp.size = 0;
     
     pthread_mutex_init(&mutex, NULL);
     

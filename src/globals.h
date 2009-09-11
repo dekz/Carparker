@@ -14,4 +14,4 @@ pthread_t t_monitor;
 // Our carpark store
 bool g_keep_running;
 CarQueue _cq;
-LinkedList _ll;
+LinkedList _cp;

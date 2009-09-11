@@ -19,22 +19,22 @@ node *new_node(void *arg)
 	n->car = c;
 	n->next = NULL;
 
-	if (_ll.head == NULL)
+	if (_cp.head == NULL)
 	{
-		_ll.head = n;
-		_ll.size = 1;
+		_cp.head = n;
+		_cp.size = 1;
 	} else
 	{
-		node *p = _ll.head;
+		node *p = _cp.head;
 		int i;
-		for (i=1; i < _ll.size-1; i++)
+		for (i=1; i < _cp.size-1; i++)
 		{
 			p = p->next;
 		}
-		printf("SIZE IS %d, RETURNING NODE NUMBER %d\n", _ll.size, i);
+		printf("SIZE IS %d, RETURNING NODE NUMBER %d\n", _cp.size, i);
 		//p should now be the last node;
 		p->next = n;
-		_ll.size++;	
+		_cp.size++;	
 	}
 
     unlock();
@@ -45,20 +45,20 @@ node *new_node(void *arg)
 
 void delete_node(int n)
 {
-	if(_ll.head == NULL) {
+	if(_cp.head == NULL) {
 		puts("Trying to delete node from empty list, ignoring...");
 		return;
 	}
 	
-	if(n > _ll.size) {
+	if(n > _cp.size) {
         return;
 	}
 	
 	lock();
-    node *previous, *current = _ll.head;
+    node *previous, *current = _cp.head;
 	
     if(n == 1) {
-        _ll.head = current->next;
+        _cp.head = current->next;
     } else {
         for(int i = 0; i < n - 1; ++i) {
             previous = current;
@@ -69,7 +69,7 @@ void delete_node(int n)
     }
     
     free(current);
-    _ll.size--;
+    _cp.size--;
 	
     unlock();
 }

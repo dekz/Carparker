@@ -7,7 +7,7 @@
 void remove_carpark()
 {
  	int _rand = 0;
-    _rand = RAND(1,_ll.size);
+    _rand = RAND(1,_cp.size);
     delete_node(_rand);
 
 }
@@ -15,10 +15,10 @@ void remove_carpark()
 void show_cars()
 {
 	lock();
-    printf("Current: %d Total: %d \n", _ll.size, CAR_PARK_SIZE);
-    if (_ll.size > 0)
+    printf("Current: %d Total: %d \n", _cp.size, CAR_PARK_SIZE);
+    if (_cp.size > 0)
     {
-        node *n = _ll.head;
+        node *n = _cp.head;
 		printf("Car Bay 1 | %s | arrived at %s\n", get_car_id(n->car), get_car_time(n->car));
 		int i = 2;
          while(n->next != NULL)
@@ -37,7 +37,7 @@ void add_car()
 {
     if (_cq.size > 0)
     {
-        if (_ll.size >= CAR_PARK_SIZE)
+        if (_cp.size >= CAR_PARK_SIZE)
         {
             printf("car park is full\n");
         } else 
@@ -80,11 +80,11 @@ void remove_car()
 
 
 bool is_carpark_full() {
-    return (_ll.size >= CAR_PARK_SIZE);
+    return (_cp.size >= CAR_PARK_SIZE);
 }
 
 bool is_carpark_empty() {
-    return (_ll.size == 0);
+    return (_cp.size == 0);
 }
 
 void exit_with_error(char *message) {
