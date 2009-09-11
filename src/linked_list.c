@@ -68,8 +68,9 @@ void delete_node(int n)
         
         previous->next = current->next;
     }
-
+	printf("attempting to free current\n");
     free(current);
+	printf("freeing current\n");
     _cp.size--;
 	
     unlock();
