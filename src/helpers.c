@@ -27,8 +27,12 @@ void show_cars()
             printf("Car Bay %d | %s | arrived at %s\n", i, get_car_id(n->car), get_car_time(n->car));
             i++;
         }
-        n = n->next;
-        printf("Car Bay %d | %s | arrived at %s\n", i, get_car_id(n->car), get_car_time(n->car));
+
+		n = n->next;
+		printf("Car Bay %d | %s | arrived at %s\n", i, get_car_id(n->car), get_car_time(n->car));
+
+        
+        printf("\n");
     }
 	unlock();
 }

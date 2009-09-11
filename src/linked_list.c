@@ -67,7 +67,7 @@ void delete_node(int n)
         
         previous->next = current->next;
     }
-    
+
     free(current);
     _cp.size--;
 	
