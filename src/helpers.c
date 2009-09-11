@@ -14,6 +14,7 @@ void remove_carpark()
 
 void show_cars()
 {
+	lock();
     printf("Current: %d Total: %d \n", _ll.size, CAR_PARK_SIZE);
     if (_ll.size > 0)
     {
@@ -30,6 +31,7 @@ void show_cars()
         
         printf("\n");
     }
+	unlock();
 }
 
 void add_car()
