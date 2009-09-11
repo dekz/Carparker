@@ -19,21 +19,18 @@ void show_cars()
     if (_cp.size > 0)
     {
         node *n = _cp.head;
-		int i=1;
-		if (_cp.size ==1)
-		{
-			printf("%d | %s | %s \n", i, get_car_id(n->car), get_car_time(n->car));
-		} else {
-			
-			for (i=1; i <= _cp.size; i++)
-			{
-				printf("%d | %s | %s \n", i, get_car_id(n->car), get_car_time(n->car));
-				n = n->next;
-			}
-			
-		}
-		
-		
+        
+		int i = 0;
+        
+        while(TRUE) {
+            if(n == NULL) break;
+            
+            i++;
+            printf("    %2d | %s | %s \n", i, get_car_id(n->car), get_car_time(n->car));
+            n = n->next;
+        }
+    } else {
+        puts("    No cars currently in the car park...");
     }
 	unlock();
 }
