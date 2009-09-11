@@ -55,12 +55,13 @@ void delete_node(int n)
 	}
 	
 	lock();
-    node *previous, *current = _cp.head;
+    node *previous = _cp.head;
+	node *current = _cp.head;
 	
     if(n == 1) {
         _cp.head = current->next;
     } else {
-        for(int i = 0; i < n - 1; ++i) {
+        for(int i = 1; i < n - 1; ++i) {
             previous = current;
             current = current->next;
         }
