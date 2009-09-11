@@ -120,5 +120,7 @@ void welcome_text() {
 }
 
 void print_car_departure(Car *c, int n) {
-    printf("[D] Car %s Departing\n", get_car_id(c));  
+	time_t now;
+	now = time(NULL);
+    printf("[D] Car %s Departing | Parked for: %5.2f\n", get_car_id(c), difftime(now, c->cartime));  
 }
