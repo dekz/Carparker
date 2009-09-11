@@ -1,0 +1,247 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		6CB19A761059E5C100245AA0 /* car.c in Sources */ = {isa = PBXBuildFile; fileRef = 6CB19A651059E5C100245AA0 /* car.c */; };
+		6CB19A771059E5C100245AA0 /* helpers.c in Sources */ = {isa = PBXBuildFile; fileRef = 6CB19A691059E5C100245AA0 /* helpers.c */; };
+		6CB19A781059E5C100245AA0 /* keyboard.c in Sources */ = {isa = PBXBuildFile; fileRef = 6CB19A6B1059E5C100245AA0 /* keyboard.c */; };
+		6CB19A791059E5C100245AA0 /* linked_list.c in Sources */ = {isa = PBXBuildFile; fileRef = 6CB19A6D1059E5C100245AA0 /* linked_list.c */; };
+		6CB19A7A1059E5C100245AA0 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 6CB19A6F1059E5C100245AA0 /* main.c */; };
+		6CB19A7B1059E5C100245AA0 /* quit.c in Sources */ = {isa = PBXBuildFile; fileRef = 6CB19A701059E5C100245AA0 /* quit.c */; };
+		6CB19A7C1059E5C100245AA0 /* thread_control.c in Sources */ = {isa = PBXBuildFile; fileRef = 6CB19A721059E5C100245AA0 /* thread_control.c */; };
+		6CB19A7D1059E5C100245AA0 /* threads.c in Sources */ = {isa = PBXBuildFile; fileRef = 6CB19A741059E5C100245AA0 /* threads.c */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		8DD76FAF0486AB0100D96B5E /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 8;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		6CB19A641059E5C100245AA0 /* bool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = bool.h; path = src/bool.h; sourceTree = "<group>"; };
+		6CB19A651059E5C100245AA0 /* car.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = car.c; path = src/car.c; sourceTree = "<group>"; };
+		6CB19A661059E5C100245AA0 /* car.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = car.h; path = src/car.h; sourceTree = "<group>"; };
+		6CB19A671059E5C100245AA0 /* carpark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = carpark.h; path = src/carpark.h; sourceTree = "<group>"; };
+		6CB19A681059E5C100245AA0 /* globals.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = globals.h; path = src/globals.h; sourceTree = "<group>"; };
+		6CB19A691059E5C100245AA0 /* helpers.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = helpers.c; path = src/helpers.c; sourceTree = "<group>"; };
+		6CB19A6A1059E5C100245AA0 /* helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = helpers.h; path = src/helpers.h; sourceTree = "<group>"; };
+		6CB19A6B1059E5C100245AA0 /* keyboard.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = keyboard.c; path = src/keyboard.c; sourceTree = "<group>"; };
+		6CB19A6C1059E5C100245AA0 /* keyboard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = keyboard.h; path = src/keyboard.h; sourceTree = "<group>"; };
+		6CB19A6D1059E5C100245AA0 /* linked_list.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = linked_list.c; path = src/linked_list.c; sourceTree = "<group>"; };
+		6CB19A6E1059E5C100245AA0 /* linked_list.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = linked_list.h; path = src/linked_list.h; sourceTree = "<group>"; };
+		6CB19A6F1059E5C100245AA0 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = main.c; path = src/main.c; sourceTree = "<group>"; };
+		6CB19A701059E5C100245AA0 /* quit.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = quit.c; path = src/quit.c; sourceTree = "<group>"; };
+		6CB19A711059E5C100245AA0 /* quit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = quit.h; path = src/quit.h; sourceTree = "<group>"; };
+		6CB19A721059E5C100245AA0 /* thread_control.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = thread_control.c; path = src/thread_control.c; sourceTree = "<group>"; };
+		6CB19A731059E5C100245AA0 /* thread_control.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = thread_control.h; path = src/thread_control.h; sourceTree = "<group>"; };
+		6CB19A741059E5C100245AA0 /* threads.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = threads.c; path = src/threads.c; sourceTree = "<group>"; };
+		6CB19A751059E5C100245AA0 /* threads.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = threads.h; path = src/threads.h; sourceTree = "<group>"; };
+		8DD76FB20486AB0100D96B5E /* Carparker */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Carparker; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8DD76FAD0486AB0100D96B5E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		08FB7794FE84155DC02AAC07 /* Carparker */ = {
+			isa = PBXGroup;
+			children = (
+				08FB7795FE84155DC02AAC07 /* Source */,
+				C6A0FF2B0290797F04C91782 /* Documentation */,
+				1AB674ADFE9D54B511CA2CBB /* Products */,
+			);
+			name = Carparker;
+			sourceTree = "<group>";
+		};
+		08FB7795FE84155DC02AAC07 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				6CB19A641059E5C100245AA0 /* bool.h */,
+				6CB19A651059E5C100245AA0 /* car.c */,
+				6CB19A661059E5C100245AA0 /* car.h */,
+				6CB19A671059E5C100245AA0 /* carpark.h */,
+				6CB19A681059E5C100245AA0 /* globals.h */,
+				6CB19A691059E5C100245AA0 /* helpers.c */,
+				6CB19A6A1059E5C100245AA0 /* helpers.h */,
+				6CB19A6B1059E5C100245AA0 /* keyboard.c */,
+				6CB19A6C1059E5C100245AA0 /* keyboard.h */,
+				6CB19A6D1059E5C100245AA0 /* linked_list.c */,
+				6CB19A6E1059E5C100245AA0 /* linked_list.h */,
+				6CB19A6F1059E5C100245AA0 /* main.c */,
+				6CB19A701059E5C100245AA0 /* quit.c */,
+				6CB19A711059E5C100245AA0 /* quit.h */,
+				6CB19A721059E5C100245AA0 /* thread_control.c */,
+				6CB19A731059E5C100245AA0 /* thread_control.h */,
+				6CB19A741059E5C100245AA0 /* threads.c */,
+				6CB19A751059E5C100245AA0 /* threads.h */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		1AB674ADFE9D54B511CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8DD76FB20486AB0100D96B5E /* Carparker */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C6A0FF2B0290797F04C91782 /* Documentation */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Documentation;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8DD76FA90486AB0100D96B5E /* Carparker */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1DEB928508733DD80010E9CD /* Build configuration list for PBXNativeTarget "Carparker" */;
+			buildPhases = (
+				8DD76FAB0486AB0100D96B5E /* Sources */,
+				8DD76FAD0486AB0100D96B5E /* Frameworks */,
+				8DD76FAF0486AB0100D96B5E /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Carparker;
+			productInstallPath = "$(HOME)/bin";
+			productName = Carparker;
+			productReference = 8DD76FB20486AB0100D96B5E /* Carparker */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		08FB7793FE84155DC02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 1DEB928908733DD80010E9CD /* Build configuration list for PBXProject "Carparker" */;
+			compatibilityVersion = "Xcode 3.1";
+			hasScannedForEncodings = 1;
+			mainGroup = 08FB7794FE84155DC02AAC07 /* Carparker */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8DD76FA90486AB0100D96B5E /* Carparker */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8DD76FAB0486AB0100D96B5E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6CB19A761059E5C100245AA0 /* car.c in Sources */,
+				6CB19A771059E5C100245AA0 /* helpers.c in Sources */,
+				6CB19A781059E5C100245AA0 /* keyboard.c in Sources */,
+				6CB19A791059E5C100245AA0 /* linked_list.c in Sources */,
+				6CB19A7A1059E5C100245AA0 /* main.c in Sources */,
+				6CB19A7B1059E5C100245AA0 /* quit.c in Sources */,
+				6CB19A7C1059E5C100245AA0 /* thread_control.c in Sources */,
+				6CB19A7D1059E5C100245AA0 /* threads.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		1DEB928608733DD80010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				INSTALL_PATH = /usr/local/bin;
+				PRODUCT_NAME = Carparker;
+			};
+			name = Debug;
+		};
+		1DEB928708733DD80010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_MODEL_TUNING = G5;
+				INSTALL_PATH = /usr/local/bin;
+				PRODUCT_NAME = Carparker;
+			};
+			name = Release;
+		};
+		1DEB928A08733DD80010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PREBINDING = NO;
+				SDKROOT = macosx10.6;
+			};
+			name = Debug;
+		};
+		1DEB928B08733DD80010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+				SDKROOT = macosx10.6;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1DEB928508733DD80010E9CD /* Build configuration list for PBXNativeTarget "Carparker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB928608733DD80010E9CD /* Debug */,
+				1DEB928708733DD80010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1DEB928908733DD80010E9CD /* Build configuration list for PBXProject "Carparker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB928A08733DD80010E9CD /* Debug */,
+				1DEB928B08733DD80010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 08FB7793FE84155DC02AAC07 /* Project object */;
+}
