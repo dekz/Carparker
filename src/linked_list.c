@@ -39,8 +39,10 @@ node *new_node(void *arg)
 
 void delete_node(int n)
 {
+
 	lock();
     node *p = _ll.head;
+<<<<<<< HEAD:src/linked_list.c
     if (_ll.size == 0)
     {
         printf("Error: No Cars to Remove\n");
@@ -80,6 +82,33 @@ void delete_node(int n)
         free(d);
         _ll.size--;
     }
+=======
+    
+	if (n == 1)
+	{
+		//remove first node
+		_ll.head = NULL;
+		_ll.size--;
+		printf("[D] Car Departing -> %s\n", get_car_id(p->car));
+		free(p);
+	} else 
+	{
+		int i=0;
+		//return the 2nd last node
+		for(i=0; i < _ll.size-1; i++)
+		{
+			p = p->next;
+		}
+		node *d = p->next;
+		p->next = NULL;
+		_ll.size--;
+		printf("[D] Car Departing -> %s\n", get_car_id(d->car));
+		free(d);
+		
+	}
+	
+
+>>>>>>> rewrote delete_node:src/linked_list.c
     unlock();
     
 }
